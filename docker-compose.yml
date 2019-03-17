@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  tile-server:
+    build: ./docker/tile-server/
+    command: sh -c 'service apache2 start && renderd -f -c /usr/local/etc/renderd.conf'
+    volumes:
+    - ./docker/volumes/mod_tile:/var/lib/mod_tile
+    - renderd:/var/run/renderd
+    - ./docker/volumes/map_data:/map_data
+    ports:
+    - 80:80
+    links:
+    - map-database
+  map-database:
+    build: ./docker/map-database/
+    environment:
+      POSTGRES_DB: gis
+      POSTGRES_USER: renderaccount
+      POSTGRES_PASSWORD: renderaccount
+    volumes:
+    - map-database-data:/var/lib/postgresql/data
+    - ./docker/map-database/initdb:/docker-entrypoint-initdb.d
+    ports:
+    - 5432:5432
+
+volumes:
+  map-database-data:
+  renderd:
