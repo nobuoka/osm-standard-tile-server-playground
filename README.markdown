@@ -1,9 +1,9 @@
-OSM “STANDARD” tile server playground
+OSM “Standard” tile server playground
 ==========
 
 This project provides followings:
 
-* docker-compose.yml that runs OpenStreetMap (OSM) “STANDARD” tile server
+* docker-compose.yml that runs OpenStreetMap (OSM) “Standard” tile server
     * mod_tile, renderd, Mapnik, osm2pgsql and a PostgreSQL/PostGIS database
     * See : [Manually building a tile server (18.04 LTS)](https://switch2osm.org/manually-building-a-tile-server-18-04-lts/)
 * HTML file that shows slippy map (Leaflet) using tile server on localhost
