@@ -5,16 +5,18 @@ FROM ubuntu:18.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && \
-    apt install -y libboost-all-dev git-core tar unzip wget bzip2 \
+    apt install -y --no-install-recommends \
+        libboost-all-dev git-core tar unzip wget bzip2 \
         build-essential autoconf libtool libxml2-dev libgeos-dev libgeos++-dev libpq-dev \
         libbz2-dev libproj-dev munin-node munin libprotobuf-c0-dev protobuf-c-compiler \
         libfreetype6-dev libtiff5-dev libicu-dev libgdal-dev libcairo-dev \
         libcairomm-1.0-dev apache2 apache2-dev libagg-dev liblua5.2-dev ttf-unifont \
-        lua5.1 liblua5.1-dev libgeotiff-epsg curl
+        lua5.1 liblua5.1-dev libgeotiff-epsg curl ca-certificates
 
 # Mapnik
-RUN apt install -y autoconf apache2-dev libtool libxml2-dev libbz2-dev libgeos-dev \
-    libgeos++-dev libproj-dev gdal-bin libmapnik-dev mapnik-utils python-mapnik
+RUN apt install -y --no-install-recommends \
+        autoconf apache2-dev libtool libxml2-dev libbz2-dev libgeos-dev \
+        libgeos++-dev libproj-dev gdal-bin libmapnik-dev mapnik-utils python-mapnik
 
 # mod_tile
 RUN cd /usr/src && \
@@ -31,7 +33,8 @@ RUN cd /usr/src && \
 RUN cd /usr/src && \
     git clone git://github.com/openstreetmap/osm2pgsql.git && \
     cd osm2pgsql && \
-    apt install -y make cmake g++ libboost-dev libboost-system-dev libboost-filesystem-dev \
+    apt install -y --no-install-recommends \
+        make cmake g++ libboost-dev libboost-system-dev libboost-filesystem-dev \
         libexpat1-dev zlib1g-dev libbz2-dev libpq-dev libgeos-dev libgeos++-dev \
         libproj-dev lua5.2 liblua5.2-dev && \
     mkdir build && cd build && \
@@ -44,7 +47,7 @@ RUN mkdir -p /home/renderaccount/src && \
     cd /home/renderaccount/src && \
     git clone git://github.com/gravitystorm/openstreetmap-carto.git && \
     cd openstreetmap-carto && \
-    apt install -y npm nodejs && \
+    apt install -y --no-install-recommends npm nodejs ca-certificates && \
     npm install -g carto && \
     sed -i /'dbname: "gis"'/a'\    host: "map-database"\n    user: "renderaccount"\n    password: "renderaccount"' project.mml && \
     carto project.mml > mapnik.xml && \
@@ -60,4 +63,5 @@ RUN echo "LoadModule tile_module /usr/lib/apache2/modules/mod_tile.so" \
         /etc/apache2/sites-available/000-default.conf
 
 # Fonts
-RUN apt install -y fonts-noto-cjk fonts-noto-hinted fonts-noto-unhinted ttf-unifont
+RUN apt install -y --no-install-recommends \
+        fonts-noto-cjk fonts-noto-hinted fonts-noto-unhinted ttf-unifont
