@@ -7,7 +7,6 @@ services:
     volumes:
     - ./docker/volumes/mod_tile:/var/lib/mod_tile
     - renderd:/var/run/renderd
-    - ./docker/volumes/map_data:/map_data
     ports:
     - 80:80
     links:
@@ -23,6 +22,12 @@ services:
     - ./docker/map-database/initdb:/docker-entrypoint-initdb.d
     ports:
     - 5432:5432
+  osm2pgsql:
+    build: ./docker/osm2pgsql
+    volumes:
+    - ./docker/volumes/map_data:/map_data
+    links:
+    - map-database
 
 volumes:
   map-database-data:

@@ -20,14 +20,14 @@ docker-compose build
 
 ```
 # on localhost
-docker-compose run tile-server bash
+docker-compose run osm2pgsql bash
 
-# in tile-server container
+# in osm2pgsql container
 cd /map_data
 wget http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf
 osm2pgsql --host map-database --username renderaccount --password -d gis \
-  --create --slim -G --hstore --tag-transform-script /home/renderaccount/src/openstreetmap-carto/openstreetmap-carto.lua \
-  -C 2500 --number-processes 1 -S /home/renderaccount/src/openstreetmap-carto/openstreetmap-carto.style \
+  --create --slim -G --hstore --tag-transform-script /openstreetmap-carto/openstreetmap-carto.lua \
+  -C 2500 --number-processes 1 -S /openstreetmap-carto/openstreetmap-carto.style \
   /map_data/azerbaijan-latest.osm.pbf
 # (password is `renderaccount`)
 ```
@@ -35,7 +35,7 @@ osm2pgsql --host map-database --username renderaccount --password -d gis \
 ### Run tile server
 
 ```
-docker-compose up -d
+docker-compose up -d tile-server
 
 # If you want to watch logs
 docker-compose logs -f
