@@ -3,12 +3,20 @@ version: '3'
 services:
   tile-server:
     build: ./docker/tile-server/
-    command: sh -c 'service apache2 start && renderd -f -c /usr/local/etc/renderd.conf'
+    command: apachectl -D FOREGROUND
     volumes:
-    - ./docker/volumes/mod_tile:/var/lib/mod_tile
-    - renderd:/var/run/renderd
+    - ./docker/volumes/tiles:/var/lib/mod_tile
     ports:
     - 80:80
+    links:
+    - tile-renderer
+  tile-renderer:
+    build: ./docker/tile-server/
+    command: renderd -f -c /usr/local/etc/renderd.conf
+    volumes:
+    - ./docker/volumes/tiles:/var/lib/mod_tile
+    ports:
+    - 7654:7654
     links:
     - map-database
   map-database:
@@ -31,4 +39,3 @@ services:
 
 volumes:
   map-database-data:
-  renderd:

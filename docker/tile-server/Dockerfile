@@ -43,13 +43,17 @@ RUN mkdir -p /home/renderaccount/src && \
     # Shapefile download
     scripts/get-shapefiles.py
 
+# Fonts
+RUN apt install -y --no-install-recommends \
+        fonts-noto-cjk fonts-noto-hinted fonts-noto-unhinted ttf-unifont
+
 # Configuring Apache
 RUN echo "LoadModule tile_module /usr/lib/apache2/modules/mod_tile.so" \
         > /etc/apache2/conf-available/mod_tile.conf && \
     a2enconf mod_tile && \
-    sed -i /'ServerAdmin'/a'\\n\tLoadTileConfigFile /usr/local/etc/renderd.conf\n\tModTileRenderdSocketName /var/run/renderd/renderd.sock\n\tModTileRequestTimeout 0\n\tModTileMissingRequestTimeout 30\n' \
+    sed -i /'ServerAdmin'/a'\\n\tLoadTileConfigFile /usr/local/etc/renderd.conf\n\tModTileRenderdSocketAddr tile-renderer 7654\n\tModTileRequestTimeout 0\n\tModTileMissingRequestTimeout 30\n' \
         /etc/apache2/sites-available/000-default.conf
 
-# Fonts
-RUN apt install -y --no-install-recommends \
-        fonts-noto-cjk fonts-noto-hinted fonts-noto-unhinted ttf-unifont
+# Configuring renderd
+RUN sed -i /'[default]'/a'iphostname=::1\nipport=7654' \
+        /usr/local/etc/renderd.conf
