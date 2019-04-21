@@ -30,30 +30,9 @@ RUN cd /usr/src && \
     make install-mod_tile && \
     ldconfig
 
-# Stylesheet configuration
-RUN mkdir -p /home/renderaccount/src && \
-    cd /home/renderaccount/src && \
-    git clone git://github.com/gravitystorm/openstreetmap-carto.git && \
-    cd openstreetmap-carto && \
-    apt install -y --no-install-recommends npm nodejs ca-certificates && \
-    npm install -g carto && \
-    sed -i /'dbname: "gis"'/a'\    host: "map-database"\n    user: "renderaccount"\n    password: "renderaccount"' project.mml && \
-    carto project.mml > mapnik.xml && \
-        # mapnik.xml is referenced from /usr/local/etc/renderd.conf
-    # Shapefile download
-    scripts/get-shapefiles.py
-
-# Fonts
-RUN apt install -y --no-install-recommends \
-        fonts-noto-cjk fonts-noto-hinted fonts-noto-unhinted ttf-unifont
-
 # Configuring Apache
 RUN echo "LoadModule tile_module /usr/lib/apache2/modules/mod_tile.so" \
         > /etc/apache2/conf-available/mod_tile.conf && \
     a2enconf mod_tile && \
     sed -i /'ServerAdmin'/a'\\n\tLoadTileConfigFile /usr/local/etc/renderd.conf\n\tModTileRenderdSocketAddr tile-renderer 7654\n\tModTileRequestTimeout 0\n\tModTileMissingRequestTimeout 30\n' \
         /etc/apache2/sites-available/000-default.conf
-
-# Configuring renderd
-RUN sed -i /'[default]'/a'iphostname=::1\nipport=7654' \
-        /usr/local/etc/renderd.conf

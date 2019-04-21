@@ -11,10 +11,11 @@ services:
     links:
     - tile-renderer
   tile-renderer:
-    build: ./docker/tile-server/
-    command: renderd -f -c /usr/local/etc/renderd.conf
+    build: ./docker/tile-renderer/
+    command: renderd -f -c /renderd.conf
     volumes:
     - ./docker/volumes/tiles:/var/lib/mod_tile
+    - ./docker/tile-renderer/renderd.conf:/renderd.conf
     ports:
     - 7654:7654
     links:
