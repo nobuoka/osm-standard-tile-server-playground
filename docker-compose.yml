@@ -5,7 +5,9 @@ services:
     build: ./docker/tile-server/
     command: apachectl -D FOREGROUND
     volumes:
+    - var-run-renderd:/var/run/renderd
     - ./docker/volumes/tiles:/var/lib/mod_tile
+    - ./docker/tile-server/renderd.conf:/etc/renderd.conf
     ports:
     - 80:80
     links:
@@ -14,10 +16,9 @@ services:
     build: ./docker/tile-renderer/
     command: renderd -f -c /renderd.conf
     volumes:
+    - var-run-renderd:/var/run/renderd
     - ./docker/volumes/tiles:/var/lib/mod_tile
     - ./docker/tile-renderer/renderd.conf:/renderd.conf
-    ports:
-    - 7654:7654
     links:
     - map-database
   map-database:
@@ -39,4 +40,5 @@ services:
     - map-database
 
 volumes:
+  var-run-renderd:
   map-database-data:

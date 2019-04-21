@@ -28,5 +28,3 @@ RUN apt update && \
     apt install -y --no-install-recommends \
         fonts-noto-cjk fonts-noto-hinted fonts-noto-unhinted ttf-unifont && \
     rm -rf /var/lib/apt/lists/*
-
-RUN mkdir -p /var/run/renderd
