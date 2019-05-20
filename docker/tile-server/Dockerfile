@@ -11,3 +11,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 # Config files (These are automatically created)
 #   /etc/apache2/mods-available/tile.load : for loading mod_tile module
 #   /etc/apache2/sites-available/tileserver_site.conf : for providing OSM tile support
+
+ADD ./tileserver_renderd.conf /etc/tileserver_renderd.conf
+ADD ./tileserver_site.conf /etc/apache2/sites-available/tileserver_site.conf
+
+CMD ["apachectl", "-D", "FOREGROUND"]
