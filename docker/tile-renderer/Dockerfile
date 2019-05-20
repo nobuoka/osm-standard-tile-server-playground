@@ -26,5 +26,5 @@ RUN apt update && \
 # Fonts
 RUN apt update && \
     apt install -y --no-install-recommends \
-        fonts-noto-cjk fonts-noto-hinted fonts-noto-unhinted ttf-unifont && \
+        fonts-noto-cjk fonts-noto-hinted fonts-noto-unhinted fonts-hanazono ttf-unifont && \
     rm -rf /var/lib/apt/lists/*
