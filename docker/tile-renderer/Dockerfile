@@ -3,7 +3,7 @@ FROM ubuntu:18.04
 # renderd and Mapnik (renderd depends on libmapnik3.0)
 RUN apt update && \
     apt install -y --no-install-recommends software-properties-common && \
-    add-apt-repository ppa:osmadmins/ppa && \
+    add-apt-repository -y ppa:osmadmins/ppa && \
     apt update && \
     apt install -y --no-install-recommends renderd && \
     rm -rf /var/lib/apt/lists/*
