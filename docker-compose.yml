@@ -14,11 +14,14 @@ services:
     - tile-renderer
   tile-renderer:
     build: ./docker/tile-renderer/
-    command: renderd -f -c /renderd.conf
+    environment:
+      POSTGRES_HOST: map-database
+      POSTGRES_DB: gis
+      POSTGRES_USER: renderaccount
+      POSTGRES_PASSWORD: renderaccount
     volumes:
     - var-run-renderd:/var/run/renderd
     - ./docker/volumes/tiles:/var/lib/mod_tile
-    - ./docker/tile-renderer/renderd.conf:/renderd.conf
     links:
     - map-database
   map-database:
