@@ -1,0 +1,126 @@
+[
+    {
+        "image": "nobuoka/osm-tile-server-apache:latest",
+        "name": "apache",
+        "dnsSearchDomains": null,
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "secretOptions": null,
+            "options": {
+                "awslogs-group": "${log_group}",
+                "awslogs-region": "${region}",
+                "awslogs-stream-prefix": "ecs"
+            }
+        },
+        "entryPoint": [],
+        "command": [],
+        "portMappings": [
+            {
+                "protocol": "tcp",
+                "hostPort": 80,
+                "containerPort": 80
+            }
+        ],
+        "linuxParameters": null,
+        "cpu": 0,
+        "environment": [],
+        "resourceRequirements": null,
+        "ulimits": null,
+        "dnsServers": null,
+        "mountPoints": [
+            {
+                "readOnly": null,
+                "containerPath": "/var/lib/mod_tile",
+                "sourceVolume": "tiles"
+            },
+            {
+                "readOnly": null,
+                "containerPath": "/var/run/renderd",
+                "sourceVolume": "var-run-renderd"
+            }
+        ],
+        "workingDirectory": null,
+        "secrets": null,
+        "dockerSecurityOptions": null,
+        "memory": null,
+        "memoryReservation": 300,
+        "volumesFrom": [],
+        "startTimeout": null,
+        "stopTimeout": null,
+        "dependsOn": null,
+        "disableNetworking": null,
+        "interactive": null,
+        "healthCheck": null,
+        "essential": true,
+        "links": [],
+        "hostname": null,
+        "extraHosts": null,
+        "pseudoTerminal": null,
+        "user": null,
+        "readonlyRootFilesystem": null,
+        "dockerLabels": null,
+        "systemControls": null,
+        "privileged": null
+    },
+    {
+        "image": "nobuoka/osm-tile-server-renderer:latest",
+        "name": "renderer",
+        "dnsSearchDomains": null,
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "secretOptions": null,
+            "options": {
+                "awslogs-group": "${log_group}",
+                "awslogs-region": "${region}",
+                "awslogs-stream-prefix": "ecs"
+            }
+        },
+        "entryPoint": null,
+        "portMappings": [],
+        "command": null,
+        "linuxParameters": null,
+        "cpu": 0,
+        "environment": [
+            { "name" : "POSTGRES_HOST", "value" : "${db_host}" },
+            { "name" : "POSTGRES_USER", "value" : "${db_user}" },
+            { "name" : "POSTGRES_PASSWORD", "value" : "${db_password}" }
+        ],
+        "resourceRequirements": null,
+        "ulimits": null,
+        "dnsServers": null,
+        "mountPoints": [
+            {
+                "readOnly": null,
+                "containerPath": "/var/run/renderd",
+                "sourceVolume": "var-run-renderd"
+            },
+            {
+                "readOnly": null,
+                "containerPath": "/var/lib/mod_tile",
+                "sourceVolume": "tiles"
+            }
+        ],
+        "workingDirectory": null,
+        "secrets": null,
+        "dockerSecurityOptions": null,
+        "memory": null,
+        "memoryReservation": null,
+        "volumesFrom": [],
+        "stopTimeout": null,
+        "startTimeout": null,
+        "dependsOn": null,
+        "disableNetworking": null,
+        "interactive": null,
+        "healthCheck": null,
+        "essential": true,
+        "links": null,
+        "hostname": null,
+        "extraHosts": null,
+        "pseudoTerminal": null,
+        "user": null,
+        "readonlyRootFilesystem": null,
+        "dockerLabels": null,
+        "systemControls": null,
+        "privileged": null
+    }
+]
