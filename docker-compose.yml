@@ -14,9 +14,9 @@ services:
     build: ./docker/tile-renderer/
     environment:
       POSTGRES_HOST: map-database
-      POSTGRES_DB: gis
-      POSTGRES_USER: renderaccount
-      POSTGRES_PASSWORD: renderaccount
+      POSTGRES_DB: map
+      POSTGRES_USER: map
+      POSTGRES_PASSWORD: map
     volumes:
     - var-run-renderd:/var/run/renderd
     - ./docker/volumes/tiles:/var/lib/mod_tile
@@ -25,16 +25,19 @@ services:
   map-database:
     build: ./docker/map-database/
     environment:
-      POSTGRES_DB: gis
-      POSTGRES_USER: renderaccount
-      POSTGRES_PASSWORD: renderaccount
+      POSTGRES_PASSWORD: password
     volumes:
     - map-database-data:/var/lib/postgresql/data
     - ./docker/map-database/initdb:/docker-entrypoint-initdb.d
-    ports:
-    - 5432:5432
-  osm2pgsql:
-    build: ./docker/osm2pgsql
+  map-data-util:
+    build: ./docker/map-data-util
+    environment:
+      POSTGRES_HOST: map-database
+      POSTGRES_ADMIN_USER: postgres
+      POSTGRES_ADMIN_PASSWORD: password
+      POSTGRES_MAP_DB: map
+      POSTGRES_MAP_USER: map
+      POSTGRES_MAP_PASSWORD: map
     volumes:
     - ./docker/volumes/map_data:/map_data
     links:

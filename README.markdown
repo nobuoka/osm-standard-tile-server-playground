@@ -16,20 +16,12 @@ This project provides followings:
 docker-compose build
 ```
 
-### Load map data
+### Initialize database
 
 ```
-# on localhost
-docker-compose run osm2pgsql bash
+docker-compose up -d map-database
 
-# in osm2pgsql container
-cd /map_data
-wget http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf
-osm2pgsql --host map-database --username renderaccount --password -d gis \
-  --create --slim -G --hstore --tag-transform-script /openstreetmap-carto/openstreetmap-carto.lua \
-  -C 2500 --number-processes 1 -S /openstreetmap-carto/openstreetmap-carto.style \
-  /map_data/azerbaijan-latest.osm.pbf
-# (password is `renderaccount`)
+docker-compose run map-data-util init-db
 ```
 
 ### Run tile server

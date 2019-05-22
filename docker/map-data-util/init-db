@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+PGPASSWORD=$POSTGRES_ADMIN_PASSWORD createuser --host $POSTGRES_HOST -U $POSTGRES_ADMIN_USER \
+    $POSTGRES_MAP_USER
+PGPASSWORD=$POSTGRES_ADMIN_PASSWORD createdb --host $POSTGRES_HOST -U $POSTGRES_ADMIN_USER \
+    --encoding=UTF8 --owner=$POSTGRES_MAP_USER $POSTGRES_MAP_DB
+
+PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql --host $POSTGRES_HOST -U $POSTGRES_ADMIN_USER -d postgres \
+    -c "ALTER USER \"$POSTGRES_MAP_USER\" WITH PASSWORD '$POSTGRES_MAP_PASSWORD';"
+
+PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql --host $POSTGRES_HOST -U $POSTGRES_ADMIN_USER -d $POSTGRES_MAP_DB \
+    -c "CREATE EXTENSION postgis;"
+PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql --host $POSTGRES_HOST -U $POSTGRES_ADMIN_USER -d $POSTGRES_MAP_DB \
+    -c "CREATE EXTENSION postgis_topology;"
+PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql --host $POSTGRES_HOST -U $POSTGRES_ADMIN_USER -d $POSTGRES_MAP_DB \
+    -c "CREATE EXTENSION hstore;"
+PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql --host $POSTGRES_HOST -U $POSTGRES_ADMIN_USER -d $POSTGRES_MAP_DB \
+    -c "ALTER TABLE geometry_columns OWNER TO $POSTGRES_MAP_USER;"
+PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql --host $POSTGRES_HOST -U $POSTGRES_ADMIN_USER -d $POSTGRES_MAP_DB \
+    -c "ALTER TABLE spatial_ref_sys OWNER TO $POSTGRES_MAP_USER;"
+
+cd /map_data
+wget http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf
+PGPASSWORD=$POSTGRES_MAP_PASSWORD osm2pgsql --host $POSTGRES_HOST --username $POSTGRES_MAP_USER \
+  -d $POSTGRES_MAP_DB --create --slim -G --hstore \
+  --tag-transform-script /openstreetmap-carto/openstreetmap-carto.lua \
+  -C 2500 --number-processes 4 -S /openstreetmap-carto/openstreetmap-carto.style \
+  /map_data/azerbaijan-latest.osm.pbf
