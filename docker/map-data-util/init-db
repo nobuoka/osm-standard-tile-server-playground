@@ -24,6 +24,7 @@ PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql --host $POSTGRES_HOST -U $POSTGRES_ADMI
 PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql --host $POSTGRES_HOST -U $POSTGRES_ADMIN_USER -d $POSTGRES_MAP_DB \
     -c "ALTER TABLE spatial_ref_sys OWNER TO $POSTGRES_MAP_USER;"
 
+mkdir -p /map_data
 cd /map_data
 wget http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf
 PGPASSWORD=$POSTGRES_MAP_PASSWORD osm2pgsql --host $POSTGRES_HOST --username $POSTGRES_MAP_USER \
