@@ -1,0 +1,54 @@
+[
+    {
+        "image": "nobuoka/osm-tile-server-util:latest",
+        "name": "util",
+        "dnsSearchDomains": null,
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "secretOptions": null,
+            "options": {
+                "awslogs-group": "${log_group}",
+                "awslogs-region": "${region}",
+                "awslogs-stream-prefix": "ecs"
+            }
+        },
+        "entryPoint": [],
+        "command": ["init-db"],
+        "linuxParameters": null,
+        "cpu": 0,
+        "environment": [
+            { "name" : "POSTGRES_HOST", "value" : "${db_host}" },
+            { "name" : "POSTGRES_ADMIN_USER", "value" : "${db_admin_user}" },
+            { "name" : "POSTGRES_ADMIN_PASSWORD", "value" : "${db_admin_password}" },
+            { "name" : "POSTGRES_MAP_DB", "value" : "${db_map_db}" },
+            { "name" : "POSTGRES_MAP_USER", "value" : "${db_map_user}" },
+            { "name" : "POSTGRES_MAP_PASSWORD", "value" : "${db_map_password}" }
+        ],
+        "resourceRequirements": null,
+        "ulimits": null,
+        "dnsServers": null,
+        "mountPoints": [],
+        "workingDirectory": null,
+        "secrets": null,
+        "dockerSecurityOptions": null,
+        "memory": null,
+        "memoryReservation": null,
+        "volumesFrom": [],
+        "startTimeout": null,
+        "stopTimeout": null,
+        "dependsOn": null,
+        "disableNetworking": null,
+        "interactive": null,
+        "healthCheck": null,
+        "essential": true,
+        "links": [],
+        "hostname": null,
+        "extraHosts": null,
+        "pseudoTerminal": null,
+        "user": null,
+        "readonlyRootFilesystem": null,
+        "dockerLabels": null,
+        "systemControls": null,
+        "privileged": null
+    }
+]

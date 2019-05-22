@@ -25,15 +25,16 @@ resource "aws_iam_role_policy_attachment" "task_attach" {
 }
 
 # See : https://www.terraform.io/docs/providers/template/d/file.html
-data "template_file" "task_definition" {
+data "template_file" "task_definition_server" {
   template = "${file("2-ecs-task/tile-server.json")}"
 
   vars {
     log_group = "${aws_cloudwatch_log_group.task_log.name}"
     region = "${var.aws_region}"
     db_host = "${aws_db_instance.db.address}"
-    db_user = "${var.db_user}"
-    db_password = "${var.db_password}"
+    db_map_db = "${var.db_map_db}"
+    db_map_user = "${var.db_map_user}"
+    db_map_password = "${var.db_map_password}"
   }
 }
 
@@ -44,7 +45,7 @@ resource "aws_ecs_task_definition" "server" {
   family = "osm-tile"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn = "${aws_iam_role.task_role.arn}"
-  container_definitions = "${data.template_file.task_definition.rendered}"
+  container_definitions = "${data.template_file.task_definition_server.rendered}"
   network_mode = "awsvpc"
   cpu = "256"
   memory = "512"
@@ -62,4 +63,32 @@ resource "aws_ecs_task_definition" "server" {
   # awslogs-group	/ecs/wdip-demo
   # awslogs-region	us-east-1
   # awslogs-stream-prefix	ecs
+}
+
+data "template_file" "task_definition_util" {
+  template = "${file("2-ecs-task/tile-util.json")}"
+
+  vars {
+    log_group = "${aws_cloudwatch_log_group.task_log.name}"
+    region = "${var.aws_region}"
+    db_host = "${aws_db_instance.db.address}"
+    db_admin_user = "${var.db_admin_user}"
+    db_admin_password = "${var.db_admin_password}"
+    db_map_db = "${var.db_map_db}"
+    db_map_user = "${var.db_map_user}"
+    db_map_password = "${var.db_map_password}"
+  }
+}
+
+# AWS ECS task definitions
+# https://www.terraform.io/docs/providers/aws/r/ecs_task_definition.html
+resource "aws_ecs_task_definition" "util" {
+  # A unique name for task definition.
+  family = "osm-tile-util"
+  requires_compatibilities = ["FARGATE"]
+  execution_role_arn = "${aws_iam_role.task_role.arn}"
+  container_definitions = "${data.template_file.task_definition_util.rendered}"
+  network_mode = "awsvpc"
+  cpu = "256"
+  memory = "512"
 }

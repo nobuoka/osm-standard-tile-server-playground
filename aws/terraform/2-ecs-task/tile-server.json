@@ -82,8 +82,9 @@
         "cpu": 0,
         "environment": [
             { "name" : "POSTGRES_HOST", "value" : "${db_host}" },
-            { "name" : "POSTGRES_USER", "value" : "${db_user}" },
-            { "name" : "POSTGRES_PASSWORD", "value" : "${db_password}" }
+            { "name" : "POSTGRES_DB", "value" : "${db_map_db}" },
+            { "name" : "POSTGRES_USER", "value" : "${db_map_user}" },
+            { "name" : "POSTGRES_PASSWORD", "value" : "${db_map_password}" }
         ],
         "resourceRequirements": null,
         "ulimits": null,

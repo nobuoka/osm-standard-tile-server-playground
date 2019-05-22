@@ -3,8 +3,11 @@ variable "aws_secret_key" {}
 variable "aws_region" {}
 variable "aws_az_db1" {}
 variable "aws_az_db2" {}
-variable "db_user" {}
-variable "db_password" {}
+variable "db_admin_user" { default = "super" }
+variable "db_admin_password" {}
+variable "db_map_user" { default = "map" }
+variable "db_map_password" {}
+variable "db_map_db" { default = "map" }
 
 variable "vpc_cidr" {
   description = "CIDR for the whole VPC"

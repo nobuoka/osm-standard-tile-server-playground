@@ -21,8 +21,8 @@ Create secrets.auto.tfvars file with following content.
 ```
 aws_access_key = "YOUR_ACCESS_KEY"
 aws_secret_key = "YOUR_SECRET_KEY"
-db_user = "DB_USER"
-db_password = "DB_PASSWORD"
+db_admin_password = "DB_PASSWORD"
+db_map_password = "DB_PASSWORD"
 ```
 
 ### Apply
