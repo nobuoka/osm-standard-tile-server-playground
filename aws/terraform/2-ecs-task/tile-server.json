@@ -43,7 +43,7 @@
         "secrets": null,
         "dockerSecurityOptions": null,
         "memory": null,
-        "memoryReservation": 300,
+        "memoryReservation": null,
         "volumesFrom": [],
         "startTimeout": null,
         "stopTimeout": null,

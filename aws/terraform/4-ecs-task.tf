@@ -1,3 +1,5 @@
+data "aws_region" "current" {}
+
 resource "aws_cloudwatch_log_group" "task_log" {
   name = "/ecs/osm-tile"
   retention_in_days = 1
@@ -30,7 +32,7 @@ data "template_file" "task_definition_server" {
 
   vars {
     log_group = "${aws_cloudwatch_log_group.task_log.name}"
-    region = "${var.aws_region}"
+    region = "${data.aws_region.current.name}"
     db_host = "${aws_db_instance.db.address}"
     db_map_db = "${var.db_map_db}"
     db_map_user = "${var.db_map_user}"
@@ -47,8 +49,8 @@ resource "aws_ecs_task_definition" "server" {
   execution_role_arn = "${aws_iam_role.task_role.arn}"
   container_definitions = "${data.template_file.task_definition_server.rendered}"
   network_mode = "awsvpc"
-  cpu = "256"
-  memory = "512"
+  cpu = "2048"
+  memory = "4096"
 
   volume {
     name = "tiles"
@@ -70,7 +72,7 @@ data "template_file" "task_definition_util" {
 
   vars {
     log_group = "${aws_cloudwatch_log_group.task_log.name}"
-    region = "${var.aws_region}"
+    region = "${data.aws_region.current.name}"
     db_host = "${aws_db_instance.db.address}"
     db_admin_user = "${var.db_admin_user}"
     db_admin_password = "${var.db_admin_password}"
