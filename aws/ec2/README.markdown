@@ -1,12 +1,17 @@
+OSM “Standard” Tile Server on AWS EC2
+=====
+
 First, create AWS EC2 instance with AMI of Ubuntu 18.04 LTS.
 
 ```
 # on localhost
-scp -i your.pem ./provision.sh ubuntu@ec2-xx-xx-xx-xx.ap-northeast-1.compute.amazonaws.com:~
-scp -i your.pem ../docker/map-database/initdb/init.sql ubuntu@ec2-xx-xx-xx-xx.ap-northeast-1.compute.amazonaws.com:~
-scp -i your.pem ../docker/tile-server/renderd.conf ubuntu@ec2-xx-xx-xx-xx.ap-northeast-1.compute.amazonaws.com:~/renderd.conf.for-mod_tile
-scp -i your.pem ../docker/tile-renderer/renderd.conf ubuntu@ec2-xx-xx-xx-xx.ap-northeast-1.compute.amazonaws.com:~
-ssh -i your.pem ubuntu@ec2-xx-xx-xx-xx.ap-northeast-1.compute.amazonaws.com
+export EC2_HOST=ec2-xx-xx-xx-xx.ap-northeast-1.compute.amazonaws.com
+scp -i your.pem ./provision.sh ubuntu@$EC2_HOST:~
+scp -i your.pem ../../docker/map-database/initdb/init.sql ubuntu@$EC2_HOST:~
+scp -i your.pem ../../docker/tile-server/renderd.conf ubuntu@$EC2_HOST:~/renderd.conf.for-mod_tile
+scp -i your.pem ../../docker/tile-renderer/renderd.conf ubuntu@$EC2_HOST:~
+
+ssh -i your.pem ubuntu@$EC2_HOST
 
 # on EC2 instance
 sudo bash provision.sh
