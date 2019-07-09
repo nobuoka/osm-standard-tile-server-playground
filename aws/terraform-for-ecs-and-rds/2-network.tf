@@ -3,7 +3,7 @@ data "aws_availability_zones" "available" {}
 resource "aws_vpc" "main" {
   cidr_block = "${var.vpc_cidr}"
   enable_dns_hostnames = true
-  tags {
+  tags = {
     Name = "osm-tile-vpc"
   }
 }
@@ -16,7 +16,7 @@ resource "aws_subnet" "private_db1" {
     vpc_id = "${aws_vpc.main.id}"
     cidr_block = "${var.private_db1_subnet_cidr}"
     availability_zone = "${data.aws_availability_zones.available.names[0]}"
-    tags {
+    tags = {
         Name = "Private Subnet for osm-tile"
     }
 }
@@ -24,7 +24,7 @@ resource "aws_subnet" "private_db2" {
     vpc_id = "${aws_vpc.main.id}"
     cidr_block = "${var.private_db2_subnet_cidr}"
     availability_zone = "${data.aws_availability_zones.available.names[1]}"
-    tags {
+    tags = {
         Name = "Private Subnet for osm-tile"
     }
 }
@@ -33,7 +33,7 @@ resource "aws_subnet" "public_subnet" {
   vpc_id = "${aws_vpc.main.id}"
   cidr_block = "${var.public_subnet_cidr}"
   #availability_zone = "eu-west-1a"
-  tags {
+  tags = {
     Name = "Public Subnet for osm-tile"
   }
 }
@@ -43,7 +43,7 @@ resource "aws_route_table" "public_subnet" {
     cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.main.id}"
   }
-  tags {
+  tags = {
     Name = "Public Subnet for osm-tile"
   }
 }

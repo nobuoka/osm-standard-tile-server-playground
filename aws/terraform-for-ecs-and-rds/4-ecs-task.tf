@@ -30,7 +30,7 @@ resource "aws_iam_role_policy_attachment" "task_attach" {
 data "template_file" "task_definition_server" {
   template = "${file("2-ecs-task/tile-server.json")}"
 
-  vars {
+  vars = {
     log_group = "${aws_cloudwatch_log_group.task_log.name}"
     region = "${data.aws_region.current.name}"
     db_host = "${aws_db_instance.db.address}"
@@ -70,7 +70,7 @@ resource "aws_ecs_task_definition" "server" {
 data "template_file" "task_definition_util" {
   template = "${file("2-ecs-task/tile-util.json")}"
 
-  vars {
+  vars = {
     log_group = "${aws_cloudwatch_log_group.task_log.name}"
     region = "${data.aws_region.current.name}"
     db_host = "${aws_db_instance.db.address}"
