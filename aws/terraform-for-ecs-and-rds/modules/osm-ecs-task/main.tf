@@ -28,12 +28,12 @@ resource "aws_iam_role_policy_attachment" "task_attach" {
 
 # See : https://www.terraform.io/docs/providers/template/d/file.html
 data "template_file" "task_definition_server" {
-  template = "${file("2-ecs-task/tile-server.json")}"
+  template = "${file("${path.module}/task-templates/tile-server.json")}"
 
   vars = {
     log_group = "${aws_cloudwatch_log_group.task_log.name}"
     region = "${data.aws_region.current.name}"
-    db_host = module.db.db_instance.address
+    db_host = var.db_instance_address
     db_map_db = "${var.db_map_db}"
     db_map_user = "${var.db_map_user}"
     db_map_password = "${var.db_map_password}"
@@ -68,12 +68,12 @@ resource "aws_ecs_task_definition" "server" {
 }
 
 data "template_file" "task_definition_util" {
-  template = "${file("2-ecs-task/tile-util.json")}"
+  template = "${file("${path.module}/task-templates/tile-util.json")}"
 
   vars = {
     log_group = "${aws_cloudwatch_log_group.task_log.name}"
     region = "${data.aws_region.current.name}"
-    db_host = module.db.db_instance.address
+    db_host = var.db_instance_address
     db_admin_user = "${var.db_admin_user}"
     db_admin_password = "${var.db_admin_password}"
     db_map_db = "${var.db_map_db}"

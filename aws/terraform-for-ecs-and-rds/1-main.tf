@@ -27,3 +27,22 @@ module "db" {
   db_admin_user = var.db_admin_user
   db_admin_password = var.db_admin_password
 }
+
+module "ecs_task" {
+  source = "./modules/osm-ecs-task"
+
+  db_instance_address = module.db.db_instance.address
+  db_admin_user = var.db_admin_user
+  db_admin_password = var.db_admin_password
+  db_map_db = var.db_map_db
+  db_map_user = var.db_map_user
+  db_map_password = var.db_map_password
+}
+
+module "ecs_service" {
+  source = "./modules/osm-ecs-service"
+
+  vpc_id = module.vpc.vpc_id
+  public_subnet_ids = module.vpc.public_subnet_ids
+  ecs_task_definition_server_arn = module.ecs_task.ecs_task_definition_server.arn
+}
