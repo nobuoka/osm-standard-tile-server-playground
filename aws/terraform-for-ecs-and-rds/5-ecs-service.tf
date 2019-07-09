@@ -5,7 +5,7 @@ resource "aws_ecs_cluster" "main" {
 resource "aws_security_group" "server_task" {
   name        = "osm-tile-server"
   description = "Allow tcp 80 inbound traffic"
-  vpc_id      = "${aws_vpc.main.id}"
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     protocol = "tcp"
@@ -30,7 +30,7 @@ resource "aws_ecs_service" "server" {
   launch_type = "FARGATE"
 
   network_configuration {
-    subnets = ["${aws_subnet.public_subnet.*.id}"]
+    subnets = module.vpc.public_subnet_ids
     security_groups = [
       "${aws_security_group.server_task.id}"
     ]
