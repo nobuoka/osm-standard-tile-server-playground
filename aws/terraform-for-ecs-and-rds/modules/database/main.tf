@@ -1,6 +1,6 @@
 resource "aws_security_group" "db" {
     name = "db_server"
-    vpc_id = module.vpc.vpc_id
+    vpc_id = var.vpc_id
 }
 
 resource "aws_security_group_rule" "db" {
@@ -15,7 +15,7 @@ resource "aws_security_group_rule" "db" {
 resource "aws_db_subnet_group" "main" {
     name        = "db_subnet"
     description = "It is a DB subnet group."
-    subnet_ids  = module.vpc.db_subnet_ids
+    subnet_ids  = var.db_subnet_ids
 }
 
 resource "aws_db_instance" "db" {

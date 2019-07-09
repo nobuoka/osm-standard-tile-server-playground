@@ -18,3 +18,12 @@ provider "template" {
 module "vpc" {
   source = "./modules/vpc"
 }
+
+module "db" {
+  source = "./modules/database"
+
+  vpc_id = module.vpc.vpc_id
+  db_subnet_ids = module.vpc.db_subnet_ids
+  db_admin_user = var.db_admin_user
+  db_admin_password = var.db_admin_password
+}

@@ -33,7 +33,7 @@ data "template_file" "task_definition_server" {
   vars = {
     log_group = "${aws_cloudwatch_log_group.task_log.name}"
     region = "${data.aws_region.current.name}"
-    db_host = "${aws_db_instance.db.address}"
+    db_host = module.db.db_instance.address
     db_map_db = "${var.db_map_db}"
     db_map_user = "${var.db_map_user}"
     db_map_password = "${var.db_map_password}"
@@ -73,7 +73,7 @@ data "template_file" "task_definition_util" {
   vars = {
     log_group = "${aws_cloudwatch_log_group.task_log.name}"
     region = "${data.aws_region.current.name}"
-    db_host = "${aws_db_instance.db.address}"
+    db_host = module.db.db_instance.address
     db_admin_user = "${var.db_admin_user}"
     db_admin_password = "${var.db_admin_password}"
     db_map_db = "${var.db_map_db}"
