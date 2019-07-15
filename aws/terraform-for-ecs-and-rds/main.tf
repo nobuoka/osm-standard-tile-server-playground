@@ -47,6 +47,6 @@ module "ecs_service" {
   source = "./modules/osm-ecs-service"
 
   vpc_id = module.vpc.vpc_id
-  public_subnet_ids = module.vpc.public_subnet_ids
+  public_subnet_ids = [module.vpc.public_subnet_id]
   ecs_task_definition_server_arn = module.ecs_task.ecs_task_definition_server.arn
 }
