@@ -43,8 +43,11 @@ terraform plan
 terraform apply
 
 # Initialize database
-# (Values of subnet and security group depends on your VPC)
-aws --profile osm-tile ecs run-task --cluster osm-tile --task-definition osm-tile-util --launch-type FARGATE --network-configuration "awsvpcConfiguration={subnets=[subnet-xxxx],securityGroups=[sg-xxxx],assignPublicIp=ENABLED}"
+#   Values of subnet and security group depends on your VPC.
+#   These values are shown by `terraform output` command.
+export subnet_id=$(terraform output public_subnet_id)
+export sg_id=$(terraform output default_sg_id)
+aws --profile osm-tile ecs run-task --cluster osm-tile --task-definition osm-tile-util --launch-type FARGATE --network-configuration "awsvpcConfiguration={subnets=[$subnet_id],securityGroups=[$sg_id],assignPublicIp=ENABLED}"
     # Wait this task ending
 
 # Change desired count of the ECS service from 0 to 1
