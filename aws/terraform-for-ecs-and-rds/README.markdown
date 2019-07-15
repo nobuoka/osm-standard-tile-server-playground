@@ -38,19 +38,28 @@ db_map_password = "(YOUR_DB_PASSWORD)"
 ### Apply
 
 ```
-# Configure resources
+# -- Configure resources --
 terraform plan
 terraform apply
 
-# Initialize database
-#   Values of subnet and security group depends on your VPC.
-#   These values are shown by `terraform output` command.
+# -- Initialize database --
+
+# Values of subnet and security group depends on your VPC.
+# These values are shown by `terraform output` command.
+# For Bash :
 export subnet_id=$(terraform output public_subnet_id)
 export sg_id=$(terraform output default_sg_id)
-aws --profile osm-tile ecs run-task --cluster osm-tile --task-definition osm-tile-util --launch-type FARGATE --network-configuration "awsvpcConfiguration={subnets=[$subnet_id],securityGroups=[$sg_id],assignPublicIp=ENABLED}"
-    # Wait this task ending
+# For PowerShell :
+$subnet_id=$(terraform output public_subnet_id)
+$sg_id=$(terraform output default_sg_id)
 
-# Change desired count of the ECS service from 0 to 1
+# Run task
+aws --profile osm-tile ecs run-task --cluster osm-tile --task-definition osm-tile-util --launch-type FARGATE --network-configuration "awsvpcConfiguration={subnets=[$subnet_id],securityGroups=[$sg_id],assignPublicIp=ENABLED}"
+
+# Wait this task ending (task_arn should be retrieved from output of former command)
+aws --profile osm-tile ecs wait tasks-stopped $task_arn
+
+# -- Change desired count of the ECS service from 0 to 1 --
 aws --profile osm-tile ecs update-service --cluster osm-tile --service osm-tile-server --desired-count 1
 
 aws --profile osm-tile ecs wait services-stable --cluster osm-tile --services osm-tile-server
