@@ -1,3 +1,7 @@
+terraform {
+  required_version = ">= 0.12.0"
+}
+
 variable "aws_configure_profile" {}
 variable "aws_region" { default = "ap-northeast-1" }
 variable "db_admin_user" { default = "super" }
