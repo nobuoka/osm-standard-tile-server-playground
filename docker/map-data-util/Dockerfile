@@ -14,7 +14,8 @@ RUN apt update && \
 RUN cd / && \
     git clone git://github.com/gravitystorm/openstreetmap-carto.git
 
-COPY ./init-db /usr/local/bin/init-db
-RUN chmod +x /usr/local/bin/init-db
+COPY ./commands/* /commands/
+RUN chmod +x /commands/*
+ENV PATH $PATH:/commands
 
 ENTRYPOINT ["bash"]

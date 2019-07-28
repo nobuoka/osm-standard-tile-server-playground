@@ -22,6 +22,7 @@ docker-compose build
 docker-compose up -d map-database
 
 docker-compose run map-data-util init-db
+docker-compose run map-data-util update-map-data
 ```
 
 ### Run tile server

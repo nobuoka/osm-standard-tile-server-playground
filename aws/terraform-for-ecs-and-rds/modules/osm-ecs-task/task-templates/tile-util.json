@@ -13,7 +13,7 @@
             }
         },
         "entryPoint": [],
-        "command": ["init-db"],
+        "command": [],
         "linuxParameters": null,
         "cpu": 0,
         "environment": [
