@@ -22,7 +22,13 @@ docker-compose build
 docker-compose up -d map-database
 
 docker-compose run map-data-util init-db
-docker-compose run map-data-util update-map-data
+```
+
+### Put map data to database
+
+```
+# First time, `--init` option must be used
+docker-compose run map-data-util update-map-data http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf --init
 ```
 
 ### Run tile server

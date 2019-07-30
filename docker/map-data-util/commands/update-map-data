@@ -1,12 +1,67 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eux
+
+opt_do_init=false
+
+usage()
+{
+    cat<<EOF
+Usage:
+ $0 <url> [option*]
+
+Options:
+ --init    Initialize or reinitialize map data
+EOF
+    exit 1
+}
+
+opts=`getopt --name "$0" --options '' --long init "$@"` || usage
+eval set -- "$opts"
+unset opts
+while [ -- != "$1" ]; do
+  case "$1" in
+	  -h | --help)
+	    usage
+	    ;;
+	  --init)
+	    opt_do_init=true
+	    ;;
+    *)
+      echo "internal error"
+      exit 1
+      ;;
+  esac
+  shift
+done
+shift # Remove "--"
+
+if [ $# -eq 1 ]; then
+  target_url="$1"
+else
+  if [ $# -lt 1 ]; then
+    echo '<url> must be specified'
+  else
+    echo 'Too much parameters'
+  fi
+  echo
+  usage
+  exit 1
+fi
+
+
+if $opt_do_init; then
+  append_arg_or_empty=''
+else
+  append_arg_or_empty='--append'
+fi
 
 mkdir -p /map_data
 cd /map_data
-wget http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf
+file_name=$(basename $target_url)
+wget -O "$file_name" $target_url
 PGPASSWORD=$POSTGRES_MAP_PASSWORD osm2pgsql --host $POSTGRES_HOST --username $POSTGRES_MAP_USER \
-  -d $POSTGRES_MAP_DB --create --slim -G --hstore \
+  -d $POSTGRES_MAP_DB $append_arg_or_empty --slim -G --hstore \
   --tag-transform-script /openstreetmap-carto/openstreetmap-carto.lua \
   -C 2500 --number-processes 4 -S /openstreetmap-carto/openstreetmap-carto.style \
-  /map_data/azerbaijan-latest.osm.pbf
+  "$file_name"
