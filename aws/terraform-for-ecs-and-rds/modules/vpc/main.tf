@@ -50,14 +50,16 @@ resource "aws_subnet" "private_db2" {
 }
 
 resource "aws_subnet" "public_subnet" {
+  count = length(data.aws_availability_zones.available.names)
   vpc_id = "${aws_vpc.main.id}"
-  cidr_block = "${var.public_subnet_cidr}"
-  #availability_zone = "eu-west-1a"
+  cidr_block = cidrsubnet(var.public_subnet_cidr, 4, count.index)
+  availability_zone = element(data.aws_availability_zones.available.names, count.index)
   tags = {
     Name = "Public Subnet for osm-tile"
   }
 }
 resource "aws_route_table" "public_subnet" {
+  count = length(data.aws_availability_zones.available.names)
   vpc_id = "${aws_vpc.main.id}"
   route {
     cidr_block = "0.0.0.0/0"
@@ -68,6 +70,7 @@ resource "aws_route_table" "public_subnet" {
   }
 }
 resource "aws_route_table_association" "public_subnet" {
-  subnet_id = "${aws_subnet.public_subnet.id}"
-  route_table_id = "${aws_route_table.public_subnet.id}"
+  count = length(data.aws_availability_zones.available.names)
+  subnet_id = element(aws_subnet.public_subnet.*.id, count.index)
+  route_table_id = element(aws_route_table.public_subnet.*.id, count.index)
 }

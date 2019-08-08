@@ -32,6 +32,14 @@ module "db" {
   db_admin_password = var.db_admin_password
 }
 
+module "loadbalancer" {
+  source = "./modules/loadbalancer"
+
+  vpc_id = module.vpc.vpc_id
+  public_subnet_ids = module.vpc.public_subnet_ids
+  default_sg_id = module.vpc.default_sg.id
+}
+
 module "ecs_task" {
   source = "./modules/osm-ecs-task"
 
@@ -47,6 +55,8 @@ module "ecs_service" {
   source = "./modules/osm-ecs-service"
 
   vpc_id = module.vpc.vpc_id
-  public_subnet_ids = [module.vpc.public_subnet_id]
+  public_subnet_ids = module.vpc.public_subnet_ids
+  target_group_arn = module.loadbalancer.osm_tile_target_group.arn
   ecs_task_definition_server_arn = module.ecs_task.ecs_task_definition_server.arn
+  default_sg_id = module.vpc.default_sg.id
 }

@@ -13,13 +13,13 @@ command_list=$1
 
 # Values of subnet and security group depends on your VPC.
 # These values are shown by `terraform output` command.
-subnet_id=$($terraform output public_subnet_id)
-sg_id=$($terraform output default_sg_id)
+subnet_ids_json=$($terraform output -json public_subnet_ids)
+sg_id_json=$($terraform output -json default_sg_id)
 
 # Run task
 task_arn=$($aws --profile osm-tile ecs run-task --cluster osm-tile --task-definition osm-tile-util \
   --overrides "{\"containerOverrides\":[{\"name\":\"util\",\"command\":$command_list}]}" --launch-type FARGATE \
-  --network-configuration "awsvpcConfiguration={subnets=[$subnet_id],securityGroups=[$sg_id],assignPublicIp=ENABLED}" \
+  --network-configuration "{\"awsvpcConfiguration\":{\"subnets\":$subnet_ids_json,\"securityGroups\":[$sg_id_json],\"assignPublicIp\":\"ENABLED\"}}" \
   --query "tasks[0].taskArn" --output text | tr -d '\r' | tr -d '\n')
 
 # Wait this task ending (task_arn should be retrieved from output of former command)

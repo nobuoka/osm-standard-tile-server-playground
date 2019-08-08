@@ -52,6 +52,8 @@ $terraform apply
 # -- Change desired count of the ECS service from 0 to 1 --
 $aws --profile osm-tile ecs update-service --cluster osm-tile --service osm-tile-server --desired-count 1
 $aws --profile osm-tile ecs wait services-stable --cluster osm-tile --services osm-tile-server
-```
 
-After services become stable, the URL “http://$(IP address of task in osm-tile-server service)/map/0/0/0.png” returns world map.
+# -- Finish --
+# After services become stable, a following URL shows world map.
+echo "Go to http://$($terraform output lb_dns_name)/map/0/0/0.png"
+```
