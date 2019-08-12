@@ -52,7 +52,7 @@ module "ecs_task" {
 }
 
 module "ecs_service" {
-  source = "./modules/osm-ecs-service"
+  source = "./modules/osm-ecs-cluster"
 
   vpc_id = module.vpc.vpc_id
   public_subnet_ids = module.vpc.public_subnet_ids
