@@ -6,6 +6,10 @@ Terraform of ECS service running OSM “Standard” tile server
 * AWS CLI
 * Terraform
 * Access Key and Secret Access Key of AWS
+* IAM role (and IAM Instance Profile) : `ecsInstanceRole`
+    * See : https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/instance_IAM_role.html
+* And ECS-CloudWatchLogs IAM policy should be attached to ecsInstanceRole
+    * See : https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/using_cloudwatch_logs.html#cwl_iam_policy
 
 ## How to apply
 

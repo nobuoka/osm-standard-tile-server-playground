@@ -45,12 +45,10 @@ data "template_file" "task_definition_server" {
 resource "aws_ecs_task_definition" "server" {
   # A unique name for task definition.
   family = "osm-tile"
-  requires_compatibilities = ["FARGATE"]
+  requires_compatibilities = ["EC2"]
   execution_role_arn = "${aws_iam_role.task_role.arn}"
   container_definitions = "${data.template_file.task_definition_server.rendered}"
   network_mode = "awsvpc"
-  cpu = "2048"
-  memory = "4096"
 
   volume {
     name = "tiles"
