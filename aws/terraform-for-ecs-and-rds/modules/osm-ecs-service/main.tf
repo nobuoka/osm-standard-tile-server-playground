@@ -2,6 +2,33 @@ resource "aws_ecs_cluster" "main" {
   name = "osm-tile"
 }
 
+data "template_file" "ecs_container_instance_user_data" {
+  template = "${file("${path.module}/ec2_user_data.template")}"
+
+  vars = {
+    cluster_name = "${aws_ecs_cluster.main.name}"
+  }
+}
+
+data "aws_iam_instance_profile" "ecs_instance_profile" {
+  # This IAM Role (and IAM Instance Profile) should be created manually.
+  # https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/instance_IAM_role.html
+  name = "ecsInstanceRole"
+}
+
+resource "aws_instance" "ecs_container_instance" {
+  # For ap-northeast-1 region
+  # See : https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/launch_container_instance.html
+  ami = "ami-04a735b489d2a0320"
+  instance_type = "t2.micro"
+  iam_instance_profile = data.aws_iam_instance_profile.ecs_instance_profile.name
+  monitoring = true
+  user_data = data.template_file.ecs_container_instance_user_data.rendered
+  tags = {
+    Name = "ECS Container Instance"
+  }
+}
+
 resource "aws_ecs_service" "server" {
   name = "osm-tile-server"
   cluster = "${aws_ecs_cluster.main.id}"
