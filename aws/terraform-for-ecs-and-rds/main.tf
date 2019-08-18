@@ -51,7 +51,7 @@ module "ecs_task" {
   db_map_password = var.db_map_password
 }
 
-module "ecs_service" {
+module "ecs_cluster" {
   source = "./modules/osm-ecs-cluster"
 
   vpc_id = module.vpc.vpc_id
