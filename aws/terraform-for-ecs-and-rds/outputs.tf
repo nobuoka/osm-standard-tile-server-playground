@@ -1,5 +1,5 @@
 output "public_subnet_ids" {
-  value = module.vpc.public_subnet_ids
+  value = [module.vpc.public_subnet_ids[0]]
 }
 
 output "default_sg_id" {

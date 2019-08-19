@@ -18,8 +18,7 @@ sg_id_json=$($terraform output -json default_sg_id)
 
 # Run task
 task_arn=$($aws --profile osm-tile ecs run-task --cluster osm-tile --task-definition osm-tile-util \
-  --overrides "{\"containerOverrides\":[{\"name\":\"util\",\"command\":$command_list}]}" --launch-type FARGATE \
-  --network-configuration "{\"awsvpcConfiguration\":{\"subnets\":$subnet_ids_json,\"securityGroups\":[$sg_id_json],\"assignPublicIp\":\"ENABLED\"}}" \
+  --overrides "{\"containerOverrides\":[{\"name\":\"util\",\"command\":$command_list}]}" --launch-type EC2 \
   --query "tasks[0].taskArn" --output text | tr -d '\r' | tr -d '\n')
 
 # Wait this task ending (task_arn should be retrieved from output of former command)

@@ -85,10 +85,8 @@ data "template_file" "task_definition_util" {
 resource "aws_ecs_task_definition" "util" {
   # A unique name for task definition.
   family = "osm-tile-util"
-  requires_compatibilities = ["FARGATE"]
+  requires_compatibilities = ["EC2"]
   execution_role_arn = "${aws_iam_role.task_role.arn}"
   container_definitions = "${data.template_file.task_definition_util.rendered}"
-  network_mode = "awsvpc"
-  cpu = "256"
-  memory = "512"
+  network_mode = "host"
 }
