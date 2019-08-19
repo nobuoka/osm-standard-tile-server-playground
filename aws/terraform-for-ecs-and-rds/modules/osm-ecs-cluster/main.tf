@@ -20,7 +20,7 @@ resource "aws_instance" "ecs_container_instance" {
   # For ap-northeast-1 region
   # See : https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/launch_container_instance.html
   ami = "ami-04a735b489d2a0320"
-  instance_type = "t2.micro"
+  instance_type = "t2.large"
   iam_instance_profile = data.aws_iam_instance_profile.ecs_instance_profile.name
   subnet_id = var.public_subnet_ids[0]
   associate_public_ip_address = true
