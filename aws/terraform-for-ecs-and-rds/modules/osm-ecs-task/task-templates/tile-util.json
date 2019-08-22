@@ -15,9 +15,9 @@
         "entryPoint": [],
         "command": [],
         "linuxParameters": null,
-        "cpu": 0,
+        "cpu": 512,
         "memory": null,
-        "memoryReservation": 512,
+        "memoryReservation": 2048,
         "environment": [
             { "name" : "POSTGRES_HOST", "value" : "${db_host}" },
             { "name" : "POSTGRES_ADMIN_USER", "value" : "${db_admin_user}" },
