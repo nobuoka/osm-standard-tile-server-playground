@@ -89,4 +89,9 @@ resource "aws_ecs_task_definition" "util" {
   execution_role_arn = "${aws_iam_role.task_role.arn}"
   container_definitions = "${data.template_file.task_definition_util.rendered}"
   network_mode = "host"
+
+  volume {
+    name = "map_data"
+    host_path = "/var/map_data"
+  }
 }

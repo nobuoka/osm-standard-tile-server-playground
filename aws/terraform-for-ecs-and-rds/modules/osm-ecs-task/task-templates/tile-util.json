@@ -29,7 +29,13 @@
         "resourceRequirements": null,
         "ulimits": null,
         "dnsServers": null,
-        "mountPoints": [],
+        "mountPoints": [
+            {
+                "sourceVolume": "map_data",
+                "containerPath": "/map_data",
+                "readOnly": false
+            }
+        ],
         "workingDirectory": null,
         "secrets": null,
         "dockerSecurityOptions": null,

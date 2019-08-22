@@ -9,6 +9,11 @@ echo ECS_CLUSTER=${cluster_name} >> /etc/ecs/ecs.config
 --==BOUNDARY==
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/usr/bin/env bash
+mkdir -p /var/map_data
+
+--==BOUNDARY==
+Content-Type: text/x-shellscript; charset="us-ascii"
+#!/usr/bin/env bash
 # Install awslogs and the jq JSON parser
 yum install -y awslogs jq
 
