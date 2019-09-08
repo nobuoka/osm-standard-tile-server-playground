@@ -63,7 +63,12 @@ $terraform apply
 $aws --profile osm-tile ecs update-service --cluster osm-tile --service osm-tile-server --desired-count 1
 $aws --profile osm-tile ecs wait services-stable --cluster osm-tile --services osm-tile-server
 
+# -- Prerender tiles --
+# This is optional.
+./scripts/run_prerenderer.sh
+    # Check status on AWS console
+
 # -- Finish --
 # After services become stable, a following URL shows world map.
-echo "Go to http://$($terraform output lb_dns_name)/osm/0/0/0.png"
+echo "Go to http://$($terraform output lb_dns_name)/osm/slippymap.html"
 ```

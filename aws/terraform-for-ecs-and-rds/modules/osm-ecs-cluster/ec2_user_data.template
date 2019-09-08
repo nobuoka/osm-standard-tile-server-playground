@@ -10,6 +10,8 @@ echo ECS_CLUSTER=${cluster_name} >> /etc/ecs/ecs.config
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/usr/bin/env bash
 mkdir -p /var/map_data
+mkdir -p /var/tiles
+mkdir -p /var/run/renderd
 
 --==BOUNDARY==
 Content-Type: text/x-shellscript; charset="us-ascii"

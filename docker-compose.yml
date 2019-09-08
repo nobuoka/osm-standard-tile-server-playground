@@ -22,6 +22,14 @@ services:
     - ./docker/volumes/tiles:/var/lib/mod_tile
     links:
     - map-database
+  tile-prerenderer:
+    build: ./docker/tile-renderer/
+    command: ["render_list", "--map", "default", "--min-zoom", "1", "--max-zoom", "10", "--all"]
+    volumes:
+    - var-run-renderd:/var/run/renderd
+    - ./docker/volumes/tiles:/var/lib/mod_tile
+    links:
+    - tile-renderer
   map-database:
     build: ./docker/map-database/
     environment:

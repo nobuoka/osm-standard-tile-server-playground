@@ -38,6 +38,19 @@ docker-compose run map-data-util update-map-data http://download.geofabrik.de/as
 docker-compose run map-data-util create-indices
 ```
 
+### Prerender tiles
+
+```
+# Start renderd
+docker-compose up -d tile-renderer
+
+# Run prerenderer
+docker-compose run tile-prerenderer
+
+# If you want to watch logs
+docker-compose logs -f
+```
+
 ### Run tile server
 
 ```
@@ -47,7 +60,7 @@ docker-compose up -d tile-server
 docker-compose logs -f
 ```
 
-Then, the url http://localhost/osm/0/0/0.png shows world map.
+Then, the url http://localhost/osm/slippymap.html shows world map.
 
 ### Show slippy map (Leaflet)
 

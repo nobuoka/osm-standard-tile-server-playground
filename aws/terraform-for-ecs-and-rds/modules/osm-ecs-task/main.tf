@@ -52,9 +52,11 @@ resource "aws_ecs_task_definition" "server" {
 
   volume {
     name = "tiles"
+    host_path = "/var/tiles"
   }
   volume {
     name = "var-run-renderd"
+    host_path = "/var/run/renderd"
   }
 
   # ログ設定
@@ -63,6 +65,27 @@ resource "aws_ecs_task_definition" "server" {
   # awslogs-group	/ecs/wdip-demo
   # awslogs-region	us-east-1
   # awslogs-stream-prefix	ecs
+}
+
+resource "aws_ecs_task_definition" "prerenderer" {
+  family = "osm-tile-prerenderer"
+  requires_compatibilities = ["EC2"]
+  execution_role_arn = "${aws_iam_role.task_role.arn}"
+  network_mode = "host"
+
+  container_definitions = templatefile("${path.module}/task-templates/tile-prerenderer.json", {
+    log_group = aws_cloudwatch_log_group.task_log.name
+    region = data.aws_region.current.name
+  })
+
+  volume {
+    name = "tiles"
+    host_path = "/var/tiles"
+  }
+  volume {
+    name = "var-run-renderd"
+    host_path = "/var/run/renderd"
+  }
 }
 
 data "template_file" "task_definition_util" {
