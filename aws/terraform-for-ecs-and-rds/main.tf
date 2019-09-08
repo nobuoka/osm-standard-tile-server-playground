@@ -11,7 +11,7 @@ variable "db_map_password" {}
 variable "db_map_db" { default = "map" }
 
 provider "aws" {
-  version = "~> 2.11.0"
+  version = "~> 2.27.0"
   profile = "${var.aws_configure_profile}"
   region = "${var.aws_region}"
 }

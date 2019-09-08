@@ -20,11 +20,12 @@ resource "aws_db_subnet_group" "main" {
 
 resource "aws_db_instance" "db" {
     identifier = "dbinstance"
-    allocated_storage = 20
     engine = "postgres"
     engine_version = "11.2"
     instance_class = "db.m4.large"
     storage_type = "gp2"
+    allocated_storage = 50
+    max_allocated_storage = 1500
     username = "${var.db_admin_user}"
     password = "${var.db_admin_password}"
     publicly_accessible = false
