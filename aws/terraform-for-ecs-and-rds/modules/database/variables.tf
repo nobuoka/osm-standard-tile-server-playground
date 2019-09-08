@@ -6,6 +6,10 @@ variable "db_subnet_ids" {
   type = list(string)
 }
 
+variable "db_availability_zone" {
+  type = string
+}
+
 variable "db_admin_user" {
   type = string
 }

@@ -27,7 +27,8 @@ module "db" {
   source = "./modules/database"
 
   vpc_id = module.vpc.vpc_id
-  db_subnet_ids = module.vpc.db_subnet_ids
+  db_subnet_ids = module.vpc.db_subnets.*.id
+  db_availability_zone = module.vpc.db_subnets[0].availability_zone
   db_admin_user = var.db_admin_user
   db_admin_password = var.db_admin_password
 }
