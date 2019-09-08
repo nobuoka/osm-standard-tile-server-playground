@@ -40,7 +40,7 @@ docker-compose up -d tile-server
 docker-compose logs -f
 ```
 
-Then, the url http://localhost/map/0/0/0.png shows world map.
+Then, the url http://localhost/osm/0/0/0.png shows world map.
 
 ### Show slippy map (Leaflet)
 

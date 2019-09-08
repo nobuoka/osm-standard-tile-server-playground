@@ -59,5 +59,5 @@ $aws --profile osm-tile ecs wait services-stable --cluster osm-tile --services o
 
 # -- Finish --
 # After services become stable, a following URL shows world map.
-echo "Go to http://$($terraform output lb_dns_name)/map/0/0/0.png"
+echo "Go to http://$($terraform output lb_dns_name)/osm/0/0/0.png"
 ```
