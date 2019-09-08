@@ -15,6 +15,7 @@ RUN cd / && \
     git clone git://github.com/gravitystorm/openstreetmap-carto.git
 
 COPY ./commands/* /commands/
+COPY ./resources/* /resources/
 RUN chmod +x /commands/*
 ENV PATH $PATH:/commands
 

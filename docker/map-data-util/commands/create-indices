@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -eu
+
+PGPASSWORD=$POSTGRES_ADMIN_PASSWORD psql --host $POSTGRES_HOST -U $POSTGRES_ADMIN_USER -d $POSTGRES_MAP_DB \
+    -f ../resources/carto-indices.sql

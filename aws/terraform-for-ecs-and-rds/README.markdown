@@ -51,7 +51,13 @@ $terraform apply
 
 # -- Initialize database --
 ./scripts/run_util_task.sh '["init-db"]'
+
+# Input map data
+# (If you input map data of other area, change map URL.)
 ./scripts/run_util_task.sh '["update-map-data","http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf","--init"]'
+
+# Create indices
+./scripts/run_util_task.sh '["create-indices"]'
 
 # -- Change desired count of the ECS service from 0 to 1 --
 $aws --profile osm-tile ecs update-service --cluster osm-tile --service osm-tile-server --desired-count 1

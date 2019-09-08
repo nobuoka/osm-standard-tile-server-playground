@@ -29,6 +29,13 @@ docker-compose run map-data-util init-db
 ```
 # First time, `--init` option must be used
 docker-compose run map-data-util update-map-data http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf --init
+
+# If you input map data of other area, change map URL.
+# e.g. use following command to input Japanese map data:
+# docker-compose run map-data-util update-map-data http://download.geofabrik.de/asia/japan-latest.osm.pbf --init
+
+# Create indices
+docker-compose run map-data-util create-indices
 ```
 
 ### Run tile server
