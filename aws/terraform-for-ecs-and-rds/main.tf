@@ -23,16 +23,6 @@ module "vpc" {
   source = "./modules/vpc"
 }
 
-module "db" {
-  source = "./modules/database"
-
-  vpc_id = module.vpc.vpc_id
-  db_subnet_ids = module.vpc.db_subnets.*.id
-  db_availability_zone = module.vpc.db_subnets[0].availability_zone
-  db_admin_user = var.db_admin_user
-  db_admin_password = var.db_admin_password
-}
-
 module "loadbalancer" {
   source = "./modules/loadbalancer"
 
@@ -41,23 +31,18 @@ module "loadbalancer" {
   default_sg_id = module.vpc.default_sg.id
 }
 
-module "ecs_task" {
-  source = "./modules/osm-ecs-task"
+module "osm_tile_server" {
+  source = "./modules/osm-tile-server"
 
-  db_instance_address = module.db.db_instance.address
+  vpc_id = module.vpc.vpc_id
+  loadbalancer_target_group_arn = module.loadbalancer.osm_tile_target_group.arn
+  default_sg_id = module.vpc.default_sg.id
+  public_subnet_ids = module.vpc.public_subnet_ids
+  db_subnet_ids = module.vpc.db_subnets.*.id
+  db_availability_zone = module.vpc.db_subnets[0].availability_zone
   db_admin_user = var.db_admin_user
   db_admin_password = var.db_admin_password
   db_map_db = var.db_map_db
   db_map_user = var.db_map_user
   db_map_password = var.db_map_password
-}
-
-module "ecs_cluster" {
-  source = "./modules/osm-ecs-cluster"
-
-  vpc_id = module.vpc.vpc_id
-  public_subnet_ids = module.vpc.public_subnet_ids
-  target_group_arn = module.loadbalancer.osm_tile_target_group.arn
-  ecs_task_definition_server_arn = module.ecs_task.ecs_task_definition_server.arn
-  default_sg_id = module.vpc.default_sg.id
 }
