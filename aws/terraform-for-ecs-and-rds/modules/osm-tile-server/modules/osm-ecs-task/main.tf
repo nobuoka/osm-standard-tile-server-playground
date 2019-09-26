@@ -26,20 +26,6 @@ resource "aws_iam_role_policy_attachment" "task_attach" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-# See : https://www.terraform.io/docs/providers/template/d/file.html
-data "template_file" "task_definition_server" {
-  template = "${file("${path.module}/task-templates/tile-server.json")}"
-
-  vars = {
-    log_group = "${aws_cloudwatch_log_group.task_log.name}"
-    region = "${data.aws_region.current.name}"
-    db_host = var.db_instance_address
-    db_map_db = "${var.db_map_db}"
-    db_map_user = "${var.db_map_user}"
-    db_map_password = "${var.db_map_password}"
-  }
-}
-
 # AWS ECS task definitions
 # https://www.terraform.io/docs/providers/aws/r/ecs_task_definition.html
 resource "aws_ecs_task_definition" "server" {
@@ -47,7 +33,14 @@ resource "aws_ecs_task_definition" "server" {
   family = "osm-tile"
   requires_compatibilities = ["EC2"]
   execution_role_arn = "${aws_iam_role.task_role.arn}"
-  container_definitions = "${data.template_file.task_definition_server.rendered}"
+  container_definitions = templatefile("${path.module}/task-templates/tile-server.json", {
+    log_group = aws_cloudwatch_log_group.task_log.name
+    region = data.aws_region.current.name
+    db_host = var.db_instance_address
+    db_map_db = var.db_map_db
+    db_map_user = var.db_map_user
+    db_map_password = var.db_map_password
+  })
   network_mode = "awsvpc"
 
   volume {
@@ -88,21 +81,6 @@ resource "aws_ecs_task_definition" "prerenderer" {
   }
 }
 
-data "template_file" "task_definition_util" {
-  template = "${file("${path.module}/task-templates/tile-util.json")}"
-
-  vars = {
-    log_group = "${aws_cloudwatch_log_group.task_log.name}"
-    region = "${data.aws_region.current.name}"
-    db_host = var.db_instance_address
-    db_admin_user = "${var.db_admin_user}"
-    db_admin_password = "${var.db_admin_password}"
-    db_map_db = "${var.db_map_db}"
-    db_map_user = "${var.db_map_user}"
-    db_map_password = "${var.db_map_password}"
-  }
-}
-
 # AWS ECS task definitions
 # https://www.terraform.io/docs/providers/aws/r/ecs_task_definition.html
 resource "aws_ecs_task_definition" "util" {
@@ -110,7 +88,16 @@ resource "aws_ecs_task_definition" "util" {
   family = "osm-tile-util"
   requires_compatibilities = ["EC2"]
   execution_role_arn = "${aws_iam_role.task_role.arn}"
-  container_definitions = "${data.template_file.task_definition_util.rendered}"
+  container_definitions = templatefile("${path.module}/task-templates/tile-util.json", {
+    log_group = aws_cloudwatch_log_group.task_log.name
+    region = data.aws_region.current.name
+    db_host = var.db_instance_address
+    db_admin_user = var.db_admin_user
+    db_admin_password = var.db_admin_password
+    db_map_db = var.db_map_db
+    db_map_user = var.db_map_user
+    db_map_password = var.db_map_password
+  })
   network_mode = "host"
 
   volume {

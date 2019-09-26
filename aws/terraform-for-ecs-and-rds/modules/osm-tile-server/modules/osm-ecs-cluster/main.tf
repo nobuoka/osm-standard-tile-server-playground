@@ -1,11 +1,3 @@
-data "template_file" "ecs_container_instance_user_data" {
-  template = "${file("${path.module}/ec2_user_data.template")}"
-
-  vars = {
-    cluster_name = "${var.ecs_cluster.name}"
-  }
-}
-
 data "aws_iam_instance_profile" "ecs_instance_profile" {
   # This IAM Role (and IAM Instance Profile) should be created manually.
   # https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/instance_IAM_role.html
@@ -22,7 +14,9 @@ resource "aws_instance" "ecs_container_instance" {
   associate_public_ip_address = true
   monitoring = true
   disable_api_termination = false
-  user_data = data.template_file.ecs_container_instance_user_data.rendered
+  user_data = templatefile("${path.module}/ec2_user_data.template", {
+    cluster_name = var.ecs_cluster.name
+  })
   tags = {
     Name = "ECS Container Instance"
   }

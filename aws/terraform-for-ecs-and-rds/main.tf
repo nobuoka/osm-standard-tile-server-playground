@@ -15,9 +15,6 @@ provider "aws" {
   profile = "${var.aws_configure_profile}"
   region = "${var.aws_region}"
 }
-provider "template" {
-  version = "~> 2.1.2"
-}
 
 module "vpc" {
   source = "./modules/vpc"
