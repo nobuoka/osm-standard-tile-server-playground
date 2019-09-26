@@ -1,12 +1,8 @@
-resource "aws_ecs_cluster" "main" {
-  name = "osm-tile"
-}
-
 data "template_file" "ecs_container_instance_user_data" {
   template = "${file("${path.module}/ec2_user_data.template")}"
 
   vars = {
-    cluster_name = "${aws_ecs_cluster.main.name}"
+    cluster_name = "${var.ecs_cluster.name}"
   }
 }
 
@@ -34,7 +30,7 @@ resource "aws_instance" "ecs_container_instance" {
 
 resource "aws_ecs_service" "server" {
   name = "osm-tile-server"
-  cluster = "${aws_ecs_cluster.main.id}"
+  cluster = "${var.ecs_cluster.id}"
   task_definition = var.ecs_task_definition_server_arn
   desired_count = 0
   launch_type = "EC2"

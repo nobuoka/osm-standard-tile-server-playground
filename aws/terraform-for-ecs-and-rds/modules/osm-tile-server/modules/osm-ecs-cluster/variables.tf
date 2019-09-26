@@ -2,6 +2,14 @@ variable "vpc_id" {
     type = string
 }
 
+variable "ecs_cluster" {
+  // aws_ecs_cluster resource ( https://www.terraform.io/docs/providers/aws/r/ecs_cluster.html )
+  type = object({
+    id = string
+    name = string
+  })
+}
+
 variable "public_subnet_ids" {
     type = list(string)
 }

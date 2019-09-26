@@ -23,6 +23,7 @@ module "ecs_cluster" {
   source = "./modules/osm-ecs-cluster"
 
   vpc_id = var.vpc_id
+  ecs_cluster = var.ecs_cluster
   public_subnet_ids = var.public_subnet_ids
   target_group_arn = var.loadbalancer_target_group_arn
   ecs_task_definition_server_arn = module.ecs_task.ecs_task_definition_server.arn
