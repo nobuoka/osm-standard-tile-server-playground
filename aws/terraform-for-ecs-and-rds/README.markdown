@@ -13,6 +13,26 @@ Terraform of ECS service running OSM “Standard” tile server
 
 ## How to apply
 
+### Configure Terraform backend (optional)
+
+If you want to use [Terraform backend](https://www.terraform.io/docs/backends/index.html), write your backend.tf file.
+
+Following is one of example configuration.
+
+```
+terraform {
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "your_organization"
+
+    workspaces {
+      name = "your_osm_tile_workspace"
+    }
+    token = "your_token"
+  }
+}
+```
+
 ### Prepare
 
 Execute following command to init Terraform.

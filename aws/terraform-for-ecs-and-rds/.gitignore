@@ -1,3 +1,4 @@
+/backend.tf
 /secrets.auto.tfvars
 /terraform.tfstate
 /terraform.tfstate.backup
