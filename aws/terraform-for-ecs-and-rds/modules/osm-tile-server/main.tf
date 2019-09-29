@@ -29,7 +29,7 @@ module "ecs_cluster" {
   source = "./modules/osm-ecs-cluster"
 
   enabled = var.enabled
-  resource_group_name = "osm-tile${var.env_name != "" ? "-${var.env_name}" : ""}"
+  ecs_cluster_name = "osm-tile${var.env_name != "" ? "-${var.env_name}" : ""}"
 
   vpc_id = var.vpc_id
   public_subnet_ids = var.public_subnet_ids

@@ -2,7 +2,7 @@ variable "enabled" {
   type = bool
   default = true
 }
-variable "resource_group_name" {
+variable "ecs_cluster_name" {
   type = string
   default = "osm-tile"
 }

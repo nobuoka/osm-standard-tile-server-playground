@@ -1,7 +1,7 @@
 resource "aws_ecs_cluster" "main" {
   count = (var.enabled ? 1 : 0)
 
-  name = "${var.resource_group_name}"
+  name = "${var.ecs_cluster_name}"
 }
 
 data "aws_iam_instance_profile" "ecs_instance_profile" {
@@ -33,7 +33,7 @@ resource "aws_instance" "ecs_container_instance" {
 resource "aws_ecs_service" "server" {
   count = (var.enabled ? 1 : 0)
 
-  name = "${var.resource_group_name}-server"
+  name = "osm-tile-server"
   cluster = aws_ecs_cluster.main[0].id
   task_definition = var.ecs_task_definition_server_arn
   desired_count = 0
