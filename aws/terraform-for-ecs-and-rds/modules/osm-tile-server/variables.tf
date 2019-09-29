@@ -13,13 +13,6 @@ variable "vpc_id" {
 variable "loadbalancer_target_group_arn" {
   type = string
 }
-variable "ecs_cluster" {
-  // aws_ecs_cluster resource ( https://www.terraform.io/docs/providers/aws/r/ecs_cluster.html )
-  type = object({
-    id = string
-    name = string
-  })
-}
 variable "default_sg_id" {
   type = string
 }

@@ -1,3 +1,9 @@
+resource "aws_ecs_cluster" "main" {
+  count = (var.enabled ? 1 : 0)
+
+  name = "${var.resource_group_name}"
+}
+
 data "aws_iam_instance_profile" "ecs_instance_profile" {
   # This IAM Role (and IAM Instance Profile) should be created manually.
   # https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/instance_IAM_role.html
@@ -17,7 +23,7 @@ resource "aws_instance" "ecs_container_instance" {
   monitoring = true
   disable_api_termination = false
   user_data = templatefile("${path.module}/ec2_user_data.template", {
-    cluster_name = var.ecs_cluster.name
+    cluster_name = aws_ecs_cluster.main[0].name
   })
   tags = {
     Name = "ECS Container Instance"
@@ -27,8 +33,8 @@ resource "aws_instance" "ecs_container_instance" {
 resource "aws_ecs_service" "server" {
   count = (var.enabled ? 1 : 0)
 
-  name = "osm-tile-${var.env_name != "" ? "${var.env_name}-" : ""}server"
-  cluster = "${var.ecs_cluster.id}"
+  name = "${var.resource_group_name}-server"
+  cluster = aws_ecs_cluster.main[0].id
   task_definition = var.ecs_task_definition_server_arn
   desired_count = 0
   launch_type = "EC2"

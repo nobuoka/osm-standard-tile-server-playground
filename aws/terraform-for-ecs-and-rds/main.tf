@@ -28,15 +28,10 @@ module "loadbalancer" {
   default_sg_id = module.vpc.default_sg.id
 }
 
-resource "aws_ecs_cluster" "main" {
-  name = "osm-tile"
-}
-
 module "osm_tile_server" {
   source = "./modules/osm-tile-server"
 
   vpc_id = module.vpc.vpc_id
-  ecs_cluster = aws_ecs_cluster.main
   loadbalancer_target_group_arn = module.loadbalancer.osm_tile_target_group.arn
   default_sg_id = module.vpc.default_sg.id
   public_subnet_ids = module.vpc.public_subnet_ids
