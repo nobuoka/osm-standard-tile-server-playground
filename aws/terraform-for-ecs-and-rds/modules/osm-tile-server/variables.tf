@@ -1,3 +1,12 @@
+variable "enabled" {
+  type = bool
+  default = true
+}
+variable "env_name" {
+  type = string
+  default = ""
+}
+
 variable "vpc_id" {
   type = string
 }

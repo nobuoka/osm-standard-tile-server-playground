@@ -1,3 +1,12 @@
+variable "enabled" {
+  type = bool
+  default = true
+}
+variable "resource_name_prefix" {
+  type = string
+  default = ""
+}
+
 variable "vpc_id" {
   type = string
 }

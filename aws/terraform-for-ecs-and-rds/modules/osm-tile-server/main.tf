@@ -1,6 +1,9 @@
 module "db" {
   source = "./modules/database"
 
+  enabled = var.enabled
+  resource_name_prefix = "${var.env_name != "" ? "osm-tile-${var.env_name}" : ""}"
+
   vpc_id = var.vpc_id
   db_subnet_ids = var.db_subnet_ids
   db_availability_zone = var.db_availability_zone
@@ -10,6 +13,9 @@ module "db" {
 
 module "ecs_task" {
   source = "./modules/osm-ecs-task"
+
+  enabled = var.enabled
+  resource_group_name = "osm-tile${var.env_name != "" ? "-${var.env_name}" : ""}"
 
   db_instance_address = module.db.db_instance.address
   db_admin_user = var.db_admin_user
@@ -21,6 +27,9 @@ module "ecs_task" {
 
 module "ecs_cluster" {
   source = "./modules/osm-ecs-cluster"
+
+  enabled = var.enabled
+  env_name = var.env_name
 
   vpc_id = var.vpc_id
   ecs_cluster = var.ecs_cluster

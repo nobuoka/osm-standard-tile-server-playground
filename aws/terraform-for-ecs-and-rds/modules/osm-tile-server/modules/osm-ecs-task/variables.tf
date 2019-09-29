@@ -1,3 +1,12 @@
+variable "enabled" {
+  type = bool
+  default = true
+}
+variable "resource_group_name" {
+  type = string
+  default = "osm-tile"
+}
+
 variable "db_instance_address" {
     type = string
 }

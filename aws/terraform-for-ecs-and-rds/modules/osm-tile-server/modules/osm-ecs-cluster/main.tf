@@ -5,6 +5,8 @@ data "aws_iam_instance_profile" "ecs_instance_profile" {
 }
 
 resource "aws_instance" "ecs_container_instance" {
+  count = (var.enabled ? 1 : 0)
+
   # For ap-northeast-1 region
   # See : https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/launch_container_instance.html
   ami = "ami-04a735b489d2a0320"
@@ -23,7 +25,9 @@ resource "aws_instance" "ecs_container_instance" {
 }
 
 resource "aws_ecs_service" "server" {
-  name = "osm-tile-server"
+  count = (var.enabled ? 1 : 0)
+
+  name = "osm-tile-${var.env_name != "" ? "${var.env_name}-" : ""}server"
   cluster = "${var.ecs_cluster.id}"
   task_definition = var.ecs_task_definition_server_arn
   desired_count = 0

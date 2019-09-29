@@ -1,3 +1,3 @@
 output "db_instance" {
-  value = aws_db_instance.db
+  value = aws_db_instance.db[0]
 }

@@ -1,7 +1,9 @@
 data "aws_region" "current" {}
 
 resource "aws_cloudwatch_log_group" "task_log" {
-  name = "/ecs/osm-tile"
+  count = (var.enabled ? 1 : 0)
+
+  name = "/ecs/${var.resource_group_name}"
   retention_in_days = 1
 }
 
@@ -18,23 +20,29 @@ data "aws_iam_policy_document" "task_role_policy" {
   }
 }
 resource "aws_iam_role" "task_role" {
-  name = "osm-tile-ecs-task-role"
+  count = (var.enabled ? 1 : 0)
+
+  name = "${var.resource_group_name}-ecs-task-role"
   assume_role_policy = "${data.aws_iam_policy_document.task_role_policy.json}"
 }
 resource "aws_iam_role_policy_attachment" "task_attach" {
-  role = "${aws_iam_role.task_role.name}"
+  count = (var.enabled ? 1 : 0)
+
+  role = "${aws_iam_role.task_role[0].name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 # AWS ECS task definitions
 # https://www.terraform.io/docs/providers/aws/r/ecs_task_definition.html
 resource "aws_ecs_task_definition" "server" {
+  count = (var.enabled ? 1 : 0)
+
   # A unique name for task definition.
-  family = "osm-tile"
+  family = "${var.resource_group_name}"
   requires_compatibilities = ["EC2"]
-  execution_role_arn = "${aws_iam_role.task_role.arn}"
+  execution_role_arn = "${aws_iam_role.task_role[0].arn}"
   container_definitions = templatefile("${path.module}/task-templates/tile-server.json", {
-    log_group = aws_cloudwatch_log_group.task_log.name
+    log_group = aws_cloudwatch_log_group.task_log[0].name
     region = data.aws_region.current.name
     db_host = var.db_instance_address
     db_map_db = var.db_map_db
@@ -61,13 +69,15 @@ resource "aws_ecs_task_definition" "server" {
 }
 
 resource "aws_ecs_task_definition" "prerenderer" {
-  family = "osm-tile-prerenderer"
+  count = (var.enabled ? 1 : 0)
+
+  family = "${var.resource_group_name}-prerenderer"
   requires_compatibilities = ["EC2"]
-  execution_role_arn = "${aws_iam_role.task_role.arn}"
+  execution_role_arn = "${aws_iam_role.task_role[0].arn}"
   network_mode = "host"
 
   container_definitions = templatefile("${path.module}/task-templates/tile-prerenderer.json", {
-    log_group = aws_cloudwatch_log_group.task_log.name
+    log_group = aws_cloudwatch_log_group.task_log[0].name
     region = data.aws_region.current.name
   })
 
@@ -84,12 +94,14 @@ resource "aws_ecs_task_definition" "prerenderer" {
 # AWS ECS task definitions
 # https://www.terraform.io/docs/providers/aws/r/ecs_task_definition.html
 resource "aws_ecs_task_definition" "util" {
+  count = (var.enabled ? 1 : 0)
+
   # A unique name for task definition.
-  family = "osm-tile-util"
+  family = "${var.resource_group_name}-util"
   requires_compatibilities = ["EC2"]
-  execution_role_arn = "${aws_iam_role.task_role.arn}"
+  execution_role_arn = "${aws_iam_role.task_role[0].arn}"
   container_definitions = templatefile("${path.module}/task-templates/tile-util.json", {
-    log_group = aws_cloudwatch_log_group.task_log.name
+    log_group = aws_cloudwatch_log_group.task_log[0].name
     region = data.aws_region.current.name
     db_host = var.db_instance_address
     db_admin_user = var.db_admin_user
