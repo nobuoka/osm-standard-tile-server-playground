@@ -1,3 +1,7 @@
+locals {
+  resource_name_suffixes = (var.staging_elb_enabled ? ["", "-stage"] : [""])
+}
+
 resource "aws_security_group" "osm_tile_alb_sg" {
   name        = "osm-tile-alb"
   description = "Allow tcp 80 inbound traffic"
@@ -19,7 +23,9 @@ resource "aws_security_group" "osm_tile_alb_sg" {
 }
 
 resource "aws_lb" "osm_tile_lb" {
-    name = "osm-tile-alb"
+    count = length(local.resource_name_suffixes)
+
+    name = "osm-tile-alb${local.resource_name_suffixes[count.index]}"
     internal = false
     load_balancer_type = "application"
     security_groups = [
@@ -30,7 +36,9 @@ resource "aws_lb" "osm_tile_lb" {
 }
 
 resource "aws_lb_target_group" "osm_tile_lb_target_group" {
-  name = "osm-tile-lb-tg"
+  count = length(local.resource_name_suffixes)
+
+  name = "osm-tile-lb-tg${element(local.resource_name_suffixes, count.index)}"
   port = 80
   protocol = "HTTP"
   vpc_id = var.vpc_id
@@ -38,12 +46,14 @@ resource "aws_lb_target_group" "osm_tile_lb_target_group" {
 }
 
 resource "aws_lb_listener" "osm_tile_lb_listener" {
-  load_balancer_arn = "${aws_lb.osm_tile_lb.arn}"
+  count = length(local.resource_name_suffixes)
+
+  load_balancer_arn = "${aws_lb.osm_tile_lb[count.index].arn}"
   port = "80"
   protocol = "HTTP"
 
   default_action {
     type = "forward"
-    target_group_arn = "${aws_lb_target_group.osm_tile_lb_target_group.arn}"
+    target_group_arn = "${aws_lb_target_group.osm_tile_lb_target_group[count.index].arn}"
   }
 }

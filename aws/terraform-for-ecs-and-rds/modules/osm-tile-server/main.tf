@@ -2,13 +2,14 @@ module "db" {
   source = "./modules/database"
 
   enabled = var.enabled
-  resource_name_prefix = "${var.env_name != "" ? "osm-tile-${var.env_name}" : ""}"
+  resource_name_prefix = "${var.env_name != "" ? "osm-tile-${var.env_name}-" : ""}"
 
   vpc_id = var.vpc_id
   db_subnet_ids = var.db_subnet_ids
   db_availability_zone = var.db_availability_zone
   db_admin_user = var.db_admin_user
   db_admin_password = var.db_admin_password
+  db_allocated_storage_in_gb = var.db_allocated_storage_in_gb
 }
 
 module "ecs_task" {

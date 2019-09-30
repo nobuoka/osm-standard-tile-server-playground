@@ -59,6 +59,13 @@ db_admin_password = "(YOUR_DB_PASSWORD)"
 db_map_password = "(YOUR_DB_PASSWORD)"
 ```
 
+Variables of Terraform configuration also be set. Create osm_server.auto.tfvars file with following content. (Your favoriate group name can be choosen. This is used as a prefix of AWS resource.)
+
+```
+osm_server_group_name = "blue"
+osm_server_staging_state = true # <- Use staging load balancer instead of production load balancer
+```
+
 ### Apply
 
 ```
@@ -75,20 +82,41 @@ $terraform apply
 # Input map data
 # (If you input map data of other area, change map URL.)
 ./scripts/run_util_task.sh '["update-map-data","http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf","--init"]'
+# Planet : ./scripts/run_util_task.sh '["update-map-data","https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf","--init"]'
+    # A run_util_task.sh script will wait task stopping.
+    # If task execution is too long, run_util_task.sh throw error.
+    # (In that case a task is still running. Check status of a task on AWS console.)
 
 # Create indices
 ./scripts/run_util_task.sh '["create-indices"]'
 
 # -- Change desired count of the ECS service from 0 to 1 --
-$aws --profile osm-tile ecs update-service --cluster osm-tile --service osm-tile-server --desired-count 1
-$aws --profile osm-tile ecs wait services-stable --cluster osm-tile --services osm-tile-server
+env='staging'
+cluster_name=$($terraform output "${env}_cluster_name")
+$aws --profile osm-tile ecs update-service --cluster $cluster_name --service osm-tile-server --desired-count 1
+$aws --profile osm-tile ecs wait services-stable --cluster $cluster_name --services osm-tile-server
 
 # -- Prerender tiles --
 # This is optional.
 ./scripts/run_prerenderer.sh
     # Check status on AWS console
 
-# -- Finish --
+# -- Check staging server --
 # After services become stable, a following URL shows world map.
+echo "Go to http://$($terraform output staging_lb_dns_name)/osm/slippymap.html"
+```
+
+After checking is finished, change content of osm_server.auto.tfvars file (to enable production lb).
+
+```
+osm_server_group_name = "blue"
+osm_server_staging_state = false # <- Enable production load balancer.
+```
+
+Then execute `terraform apply`.
+
+```
+# -- Finish --
+# After that, a production URL shows world map.
 echo "Go to http://$($terraform output lb_dns_name)/osm/slippymap.html"
 ```

@@ -40,3 +40,7 @@ variable "db_map_user" {
 variable "db_map_password" {
   type = string
 }
+variable "db_allocated_storage_in_gb" {
+  type = number
+  default = 1400
+}

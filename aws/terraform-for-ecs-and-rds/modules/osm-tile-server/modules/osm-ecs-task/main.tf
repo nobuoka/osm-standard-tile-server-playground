@@ -4,7 +4,7 @@ resource "aws_cloudwatch_log_group" "task_log" {
   count = (var.enabled ? 1 : 0)
 
   name = "/ecs/${var.resource_group_name}"
-  retention_in_days = 1
+  retention_in_days = 7
 }
 
 # Log driver : https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html

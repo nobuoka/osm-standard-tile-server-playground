@@ -3,4 +3,6 @@
 /terraform.tfstate
 /terraform.tfstate.backup
 
+/osm_server.auto.tfvars
+
 /.terraform

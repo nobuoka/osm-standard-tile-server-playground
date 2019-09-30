@@ -32,7 +32,7 @@ resource "aws_db_instance" "db" {
     engine_version = "11.2"
     instance_class = "db.m4.large"
     storage_type = "gp2"
-    allocated_storage = 50
+    allocated_storage = var.db_allocated_storage_in_gb
     max_allocated_storage = 1500
     username = "${var.db_admin_user}"
     password = "${var.db_admin_password}"

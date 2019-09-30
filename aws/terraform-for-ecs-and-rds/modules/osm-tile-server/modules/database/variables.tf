@@ -26,3 +26,7 @@ variable "db_admin_user" {
 variable "db_admin_password" {
   type = string
 }
+
+variable "db_allocated_storage_in_gb" {
+  type = number
+}
