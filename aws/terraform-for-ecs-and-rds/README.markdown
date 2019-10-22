@@ -91,7 +91,7 @@ $terraform apply
 ./scripts/run_util_task.sh '["create-indices"]'
 
 # -- Change desired count of the ECS service from 0 to 1 --
-env='staging'
+env='main'
 cluster_name=$($terraform output "${env}_cluster_name")
 $aws --profile osm-tile ecs update-service --cluster $cluster_name --service osm-tile-server --desired-count 1
 $aws --profile osm-tile ecs wait services-stable --cluster $cluster_name --services osm-tile-server
