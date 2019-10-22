@@ -1,0 +1,45 @@
+{
+  "metrics": {
+    "append_dimensions": {
+      "AutoScalingGroupName": "${aws:AutoScalingGroupName}",
+      "ImageId": "${aws:ImageId}",
+      "InstanceId": "${aws:InstanceId}",
+      "InstanceType": "${aws:InstanceType}"
+    },
+    "aggregation_dimensions": [["ImageId"], ["InstanceType"]],
+    "metrics_collected": {
+      "cpu": {
+        "measurement": [
+          "cpu_usage_idle",
+          "cpu_usage_iowait",
+          "cpu_usage_user",
+          "cpu_usage_system"
+        ]
+      },
+      "disk": {
+        "measurement": [
+          "disk_used_percent",
+          "disk_inodes_free"
+        ],
+        "ignore_file_system_types": [
+          "tmpfs",
+          "devtmpfs"
+        ]
+      },
+      "mem": {
+        "measurement": [
+          "mem_used_percent"
+        ]
+      },
+      "procstat": [
+        {
+          "exe": "docker",
+          "measurement": [
+            "cpu_usage",
+            "memory_rss"
+          ]
+        }
+      ]
+    }
+  }
+}

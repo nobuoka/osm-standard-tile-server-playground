@@ -9,9 +9,35 @@ echo ECS_CLUSTER=${cluster_name} >> /etc/ecs/ecs.config
 --==BOUNDARY==
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/usr/bin/env bash
+
+# Create directories used by ECS tasks
 mkdir -p /var/map_data
 mkdir -p /var/tiles
 mkdir -p /var/run/renderd
+
+#####
+# Setup CloudWatch agent
+# See : https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/download-cloudwatch-agent-commandline.html
+# See : https://ngyuki.hatenablog.com/entry/2019/01/30/173822
+
+# Install CloudWatch agent
+yum -y install https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
+
+# Configuration file
+cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<- EOF
+${cloudwatch_agent_json}
+EOF
+
+# Start CloudWatch agent
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 \
+    -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
+
+--==BOUNDARY==
+Content-Type: text/x-shellscript; charset="us-ascii"
+#!/usr/bin/env bash
+#
+# CloudWatch Logs with Container instances
+# See : https://docs.aws.amazon.com/en_pv/AmazonECS/latest/developerguide/using_cloudwatch_logs.html
 
 --==BOUNDARY==
 Content-Type: text/x-shellscript; charset="us-ascii"
