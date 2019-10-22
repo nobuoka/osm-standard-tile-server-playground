@@ -120,3 +120,21 @@ Then execute `terraform apply`.
 # After that, a production URL shows world map.
 echo "Go to http://$($terraform output lb_dns_name)/osm/slippymap.html"
 ```
+
+### Update map data
+
+You can set up a new OSM tile server while an OSM tile server already running remains.
+
+First, rewrite osm_server.auto.tfvars file.
+
+```
+osm_server_group_name = "green" # <- New OSM tile server
+osm_server_staging_state = true # <- Enable staging load balancer.
+
+osm_server_backup_enabled = true
+osm_server_backup_group_name = "blue" # <- OSM tile server already running as backup
+```
+
+Next, execute `terraform state mv module.osm_tile_server_main module.osm_tile_server_backup` and execute `terraform apply`.
+Then, new OSM tile server is created as staging.
+(After that, you can set up database the same way you initially set up.)
