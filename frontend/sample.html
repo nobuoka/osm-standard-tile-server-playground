@@ -20,7 +20,8 @@ body {
   <div id="map"></div>
   <script>
     var map = L.map('map').setView([0, 0], 3);
-    L.tileLayer('http://localhost/osm/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+    //L.tileLayer('http://localhost/osm/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+    L.tileLayer('http://ec2-54-238-161-174.ap-northeast-1.compute.amazonaws.com/osm/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
   </script>
 </body>
 </html>
