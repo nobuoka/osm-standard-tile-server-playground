@@ -56,6 +56,8 @@ $terraform apply
 # (If you input map data of other area, change map URL.)
 ./scripts/run_util_task.sh '["update-map-data","http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf","--init"]'
 
+./scripts/run_util_task.sh '["update-map-data","http://download.geofabrik.de/asia-latest.osm.pbf","--init"]'
+
 # Create indices
 ./scripts/run_util_task.sh '["create-indices"]'
 

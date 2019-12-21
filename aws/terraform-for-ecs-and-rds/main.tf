@@ -2,7 +2,8 @@ terraform {
   required_version = ">= 0.12.0"
 }
 
-variable "aws_configure_profile" {}
+variable "aws_access_key" {}
+variable "aws_secret_key" {}
 variable "aws_region" { default = "ap-northeast-1" }
 variable "db_admin_user" { default = "super" }
 variable "db_admin_password" {}
@@ -12,8 +13,9 @@ variable "db_map_db" { default = "map" }
 
 provider "aws" {
   version = "~> 2.27.0"
-  profile = "${var.aws_configure_profile}"
-  region = "${var.aws_region}"
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
+  region = var.aws_region
 }
 provider "template" {
   version = "~> 2.1.2"

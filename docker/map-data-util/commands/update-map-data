@@ -56,6 +56,12 @@ else
   append_arg_or_empty='--append'
 fi
 
+#   osm2pgsql -c -d gis --slim -C <cache size> -k \
+#      --flat-nodes <flat nodes> planet-latest.osm.pbf
+#
+# --slim : 一時データを DB に保持。 遅くなるけどメモリ使用量が減る。 後で --append するなら必要
+# 
+
 mkdir -p /map_data
 cd /map_data
 file_name=$(basename $target_url)
