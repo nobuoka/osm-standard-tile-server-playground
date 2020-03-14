@@ -50,8 +50,17 @@ render_list --map default --min-zoom 0 --max-zoom 2 --all
 
 https://switch2osm.org/manually-building-a-tile-server-18-04-lts/
 
-# TODO
+## TODO
 INDEX を貼る
+
+```
+wget https://raw.githubusercontent.com/gravitystorm/openstreetmap-carto/master/indexes.sql
+sudo -u renderaccount psql -d gis -f indexes.sql
+```
+
+## ログ確認
+
+sudo journalctl -u renderd -f
 
 ## screen
 
