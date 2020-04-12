@@ -9,6 +9,9 @@ ssh -i your.pem ubuntu@ec2-xx-xx-xx-xx.ap-northeast-1.compute.amazonaws.com
 
 ```
 # on EC2 instance
+mkdir osm
+cd osm
+
 export OSM_AWS_EC2_URL="https://raw.githubusercontent.com/nobuoka/osm-standard-tile-server-playground/ec2-world-map/aws/ec2-world-map"
 curl "${OSM_AWS_EC2_URL}/provision.sh" > provision.sh
 bash ./provision.sh
