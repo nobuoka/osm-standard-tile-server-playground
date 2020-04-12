@@ -1,8 +1,10 @@
 export DEBIAN_FRONTEND=noninteractive
 
-$resources_url="https://raw.githubusercontent.com/nobuoka/osm-standard-tile-server-playground/ec2-world-map/aws/ec2-world-map/resources/"
+source_dir_url=${OSM_AWS_EC2_URL:-"https://raw.githubusercontent.com/nobuoka/osm-standard-tile-server-playground/master/aws/ec2-world-map"}
+resources_url="${source_dir_url}/resources"
+
 mkdir resources
-curl ${resources_url}/init-db.sql > resources/
+curl ${resources_url}/init-db.sql > resources/init-db.sql
 
 exit 0
 
