@@ -4,6 +4,7 @@ OSM “Standard” Tile Server (world map) on AWS EC2
 First, create AWS EC2 instance with AMI of Ubuntu 18.04 LTS.
 
 ```
+# on localhost
 ssh -i your.pem ubuntu@ec2-xx-xx-xx-xx.ap-northeast-1.compute.amazonaws.com
 ```
 
@@ -18,16 +19,6 @@ bash -x ./provision.sh
 ```
 
 ```
-# on localhost
-export EC2_HOST=ec2-xx-xx-xx-xx.ap-northeast-1.compute.amazonaws.com
-scp -i your.pem ./provision.sh ubuntu@$EC2_HOST:~
-scp -i your.pem ./init-db.sql ubuntu@$EC2_HOST:~
-scp -i your.pem ../../docker/tile-server/tileserver_renderd.conf ubuntu@$EC2_HOST:~
-scp -i your.pem ../../docker/tile-server/tileserver_site.conf ubuntu@$EC2_HOST:~
-scp -i your.pem ../../docker/tile-renderer/renderd.conf ubuntu@$EC2_HOST:~
-
-ssh -i your.pem ubuntu@$EC2_HOST
-
 # on EC2 instance
 sudo bash provision.sh
 sudo -u postgres psql -d gis -f init-db.sql

@@ -1,4 +1,3 @@
-export DEBIAN_FRONTEND=noninteractive
 set -eu
 
 source_dir_url=${OSM_AWS_EC2_URL:-"https://raw.githubusercontent.com/nobuoka/osm-standard-tile-server-playground/master/aws/ec2-world-map"}
