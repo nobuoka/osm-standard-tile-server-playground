@@ -24,4 +24,4 @@ packages=(
     postgresql-10-postgis-2.4
     postgresql-10-postgis-2.4-scripts
 )
-sudo apt install -y --no-install-recommends "${packages[@]}"
+DEBIAN_FRONTEND=noninteractive sudo apt install -y --no-install-recommends "${packages[@]}"
