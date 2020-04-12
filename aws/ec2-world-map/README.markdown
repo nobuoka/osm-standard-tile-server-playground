@@ -14,7 +14,7 @@ cd osm
 
 export OSM_AWS_EC2_URL="https://raw.githubusercontent.com/nobuoka/osm-standard-tile-server-playground/ec2-world-map/aws/ec2-world-map"
 curl "${OSM_AWS_EC2_URL}/provision.sh" > provision.sh
-bash ./provision.sh
+bash -x ./provision.sh
 ```
 
 ```

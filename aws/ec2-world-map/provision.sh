@@ -11,4 +11,4 @@ curl "${resources_url}/renderd.conf" > resources/renderd.conf
 curl "${resources_url}/tileserver_renderd.conf" > resources/tileserver_renderd.conf
 curl "${resources_url}/tileserver_site.conf" > resources/tileserver_site.conf
 
-bash ./resources/install-tools.sh
+source ./resources/install-tools.sh
