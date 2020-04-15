@@ -21,15 +21,7 @@ bash -x ./provision.sh
 ```
 # on EC2 instance
 sudo bash provision.sh
-sudo -u postgres psql -d gis -f init-db.sql
-# -u renderaccount でもよいかも？
 
-cp /etc/apache2/sites-available/tileserver_site.conf ./tileserver_site.conf.original
-sudo mv ./tileserver_site.conf /etc/apache2/sites-available/tileserver_site.conf
-sudo mv ./tileserver_renderd.conf /etc/tileserver_renderd.conf
-sudo mv ./renderd.conf /etc/renderd2.conf
-
-sudo service apache2 reload
 
 mkdir mapdata
 cd mapdata
