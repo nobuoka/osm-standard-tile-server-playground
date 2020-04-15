@@ -18,4 +18,6 @@ curl "${resources_url}/tileserver_site.conf" > resources/tileserver_site.conf
 
 source ./resources/install-apt-packages.sh
 source ./resources/install-osm-carto.sh
-source ./setup-tools.sh
+
+source ./setup-apache-renderd.sh
+source ./setup-postgresql.sh
