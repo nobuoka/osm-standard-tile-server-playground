@@ -1,6 +1,7 @@
 # Stylesheet configuration
-# mapnik-utils is needed for shapeindex command
-sudo apt install -y --no-install-recommends mapnik-utils git-core npm nodejs ca-certificates
+# mapnik-utils is needed by shapeindex command
+# python3-distutils is needed by scripts/get-shapefiles.py
+sudo apt install -y --no-install-recommends mapnik-utils git-core npm nodejs ca-certificates python3-distutils
 sudo npm install -g carto
 
 cd /home/ubuntu/osm
