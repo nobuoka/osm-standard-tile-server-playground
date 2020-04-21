@@ -14,6 +14,7 @@ mkdir osm
 cd osm
 screen
 
+export MAP_URL=http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf
 export REPOSITORY_URL="https://raw.githubusercontent.com/nobuoka/osm-standard-tile-server-playground/ec2-world-map/aws/ec2-world-map"
 curl "${REPOSITORY_URL}/provision.sh" > provision.sh
 bash -x ./provision.sh
