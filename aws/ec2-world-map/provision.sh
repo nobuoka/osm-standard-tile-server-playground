@@ -10,6 +10,7 @@ curl "${resources_url}/setup-apache-renderd.sh" > resources/setup-apache-renderd
 curl "${resources_url}/setup-postgresql.sh" > resources/setup-postgresql.sh
 curl "${resources_url}/put-map-data.sh" > resources/put-map-data.sh
 curl "${resources_url}/init-db.sql" > resources/init-db.sql
+curl "${resources_url}/postgres-osm.conf" > resources/postgres-osm.conf
 curl "${resources_url}/renderd.conf" > resources/renderd.conf
 curl "${resources_url}/tileserver_renderd.conf" > resources/tileserver_renderd.conf
 curl "${resources_url}/tileserver_site.conf" > resources/tileserver_site.conf

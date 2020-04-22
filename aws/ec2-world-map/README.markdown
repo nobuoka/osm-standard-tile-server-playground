@@ -3,6 +3,9 @@ OSM “Standard” Tile Server (world map) on AWS EC2
 
 First, create AWS EC2 instance with [AMI of Ubuntu 18.04 LTS](https://aws.amazon.com/marketplace/pp/B07CQ33QKV).
 
+* Instance type : r5a.xlarge
+* Storage size : 1500 GB
+
 ```
 # on localhost
 ssh -i your.pem ubuntu@ec2-xx-xx-xx-xx.ap-northeast-1.compute.amazonaws.com

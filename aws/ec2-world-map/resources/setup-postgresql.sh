@@ -5,3 +5,5 @@ sudo -u postgres createuser www-data
 sudo -u postgres psql -c "GRANT \"osm\" TO \"www-data\";"
 
 sudo -u postgres psql -d gis -f init-db.sql
+
+sudo -u postgres cp ./postgres-osm.conf /etc/postgres/10/main/conf.d/
