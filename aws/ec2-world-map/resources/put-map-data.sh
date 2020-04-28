@@ -9,7 +9,7 @@ cd mapdata
 
 wget $map_url -O map.osm.pbf
 
-# * -C (cache size): should be around 80% of the free RAM. (GB)
+# * -C (cache size): should be around 80% of the free RAM (GB)
 # * --number-processes: should be equal to number of CPU cores
 sudo -u www-data osm2pgsql -d gis \
   --create --slim -G --hstore --tag-transform-script $carto_dir/openstreetmap-carto.lua \
