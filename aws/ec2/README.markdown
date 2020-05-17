@@ -53,6 +53,10 @@ https://switch2osm.org/manually-building-a-tile-server-18-04-lts/
 # TODO
 INDEX を貼る
 
+wget https://raw.githubusercontent.com/gravitystorm/openstreetmap-carto/master/indexes.sql
+# -u renderaccount でもいいかも？
+sudo -u postgres psql -d gis -f init-db.sql
+
 ## screen
 
 screen -S update-map-data
