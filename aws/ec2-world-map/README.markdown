@@ -24,11 +24,8 @@ screen # recommended because following process takes a lot time.
 # Set map data url to `MAP_URL` if you want to use other map data.
 #export MAP_URL=http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf
 
-# A repository url https://raw.githubusercontent.com/nobuoka/osm-standard-tile-server-playground/master/aws/ec2-world-map
-# is used by default.
-# Set repository url to `REPOSITORY_URL` if you want to use other repository url.
-#export REPOSITORY_URL="https://raw.githubusercontent.com/nobuoka/osm-standard-tile-server-playground/ec2-world-map/aws/ec2-world-map"
-
+# An environment variable `REPOSITORY_URL` is also used in provision.sh.
+export REPOSITORY_URL="https://raw.githubusercontent.com/nobuoka/osm-standard-tile-server-playground/master/aws/ec2-world-map"
 curl "${REPOSITORY_URL}/provision.sh" > provision.sh
 bash -x ./provision.sh
 ```
