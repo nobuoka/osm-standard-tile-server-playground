@@ -66,6 +66,11 @@ Then, the url http://localhost/osm/slippymap.html shows world map.
 
 Browse [frontend/sample.html](./frontend/sample.html).
 
+## Lisence
+
+The Software is published under the MIT license.
+See [LICENSE](./LICENSE) file.
+
 ## Acknowledgements
 
 Thanks to [OND Inc.](https://ond-inc.com/)
